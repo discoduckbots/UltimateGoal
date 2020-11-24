@@ -29,16 +29,16 @@
 
 package discoduckbots.opmode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.discoduckbots.hardware.Arm;
-import org.firstinspires.ftc.discoduckbots.hardware.CapstoneServo;
-import org.firstinspires.ftc.discoduckbots.hardware.IntakeWheels;
-import org.firstinspires.ftc.discoduckbots.hardware.MecanumDrivetrain;
-import org.firstinspires.ftc.discoduckbots.hardware.MotorBasedDragger;
+import discoduckbots.hardware.Intake;
+import discoduckbots.hardware.MecanumDrivetrain;
+import discoduckbots.hardware.Shooter;
+import discoduckbots.hardware.WobbleMover;
 
 
 /**
@@ -55,17 +55,18 @@ import org.firstinspires.ftc.discoduckbots.hardware.MotorBasedDragger;
  */
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Mecanum OpMode", group="Linear Opmode")
+@Disabled
 public class MecanumDrivetrainTeleOp extends LinearOpMode {
 
     private static final double THROTTLE = 0.45;
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private MecanumDrivetrain mMecanumDrivetrain = null;
-    private IntakeWheels mIntakeWheels = null;
-    private MotorBasedDragger mDragger = null;
-    private Arm mArm = null;
-    private CapstoneServo mCapstoneServo = null;
+    private MecanumDrivetrain mecanumDrivetrain = null;
+    private Intake intake = null;
+    private Shooter shooter = null;
+    private WobbleMover wobbleMover = null;
+
 
     @Override
     public void runOpMode() {
@@ -73,23 +74,18 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
         DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
         DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        mMecanumDrivetrain = new MecanumDrivetrain(telemetry, frontLeft, frontRight, backLeft, backRight);
+        mecanumDrivetrain = new MecanumDrivetrain(telemetry, frontLeft, frontRight, backLeft, backRight);
 
-        DcMotor intakeLeft = hardwareMap.get(DcMotor.class, "intakeLeft");
-        DcMotor intakeRight = hardwareMap.get(DcMotor.class, "intakeRight");
-        mIntakeWheels = new IntakeWheels(intakeLeft, intakeRight);
+        DcMotor intakeMotor = hardwareMap.get(DcMotor.class, "intake");
+        intake = new Intake(intakeMotor);
 
-        DcMotor draggerMotor = hardwareMap.get(DcMotor.class, "dragger");
-        mDragger = new MotorBasedDragger(draggerMotor);
+        DcMotor shooterMotor = hardwareMap.get(DcMotor.class, "shooter");
+        Servo pusherServo = hardwareMap.get(Servo.class, "pusher");
+        shooter = new Shooter(shooterMotor, pusherServo);
 
-        DcMotor linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
-        Servo wrist = hardwareMap.get(Servo.class, "wrist");
-        Servo grabber = hardwareMap.get(Servo.class, "grabber");
-        mArm = new Arm(linearSlide, wrist, grabber);
-
-        Servo capstoneServo = hardwareMap.get(Servo.class, "capstone");
-        mCapstoneServo = new CapstoneServo(capstoneServo);
-
+        DcMotor wobbleMoverMotor = hardwareMap.get(DcMotor.class, "wobbleMover");
+        Servo wobbleGrabber = hardwareMap.get(Servo.class, "wobbleGrabber");
+        wobbleMover = new WobbleMover(wobbleMoverMotor, wobbleGrabber);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -97,67 +93,39 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
 
             /* Gamepad 1 */
-            mMecanumDrivetrain.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, THROTTLE);
+            mecanumDrivetrain.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, THROTTLE);
 
             if (gamepad1.a) {
-                mIntakeWheels.spinInward();
+                intake.intake();
             } else if (gamepad1.b) {
-                mIntakeWheels.spinOutward();
+                intake.outtake();
             } else {
-                mIntakeWheels.stop();
+                intake.stop();
             }
 
-            if (gamepad1.x) {
-                mDragger.move(0.3);
-            } else if (gamepad1.y) {
-                mDragger.move(-0.3);
-            } else {
-                mDragger.stop();
+            if (gamepad1.right_trigger > 0){
+                shooter.shoot();
             }
 
-            if (gamepad1.right_bumper){
-                mCapstoneServo.rotateIntoScoringPosition();
-            }
-            else if (gamepad1.left_bumper){
-                mCapstoneServo.returnToStartPosition();
-            }
-
-//
             /* Gamepad 2 */
-            if (gamepad2.left_stick_y < 0) {
-                mArm.moveVertical(gamepad2.left_stick_y * .6);
-                telemetry.addData("Slide Power:",gamepad2.left_stick_y * .6);
-                telemetry.update();
-            } else if (gamepad2.left_stick_y > 0) {
-                mArm.moveVertical(gamepad2.left_stick_y * .10);
-                telemetry.addData("Slide Power:",gamepad2.left_stick_y * .10);
-                telemetry.update();
-            } else {
-                mArm.moveVertical(0);
+            if (gamepad2.left_stick_y < 0){
+                wobbleMover.lower();
             }
-            // mArm.moveVertical(gamepad2.left_stick_y*1.5);
-
-
-            if (gamepad2.x) {
-                mArm.flop();
+            else if (gamepad2.left_stick_y > 0){
+                wobbleMover.lift();
             }
 
-            if (gamepad2.y) {
-                mArm.flip();
+            if (gamepad2.a){
+                wobbleMover.grab();
             }
-
-            if (gamepad2.a) {
-                mArm.grab();
-            }
-
-            if (gamepad2.b) {
-                mArm.release();
+            if (gamepad2.b){
+                wobbleMover.release();
             }
         }
 
 
         telemetry.addData("MecanumDrivetrainTeleOp", "Stopping");
-        mMecanumDrivetrain.stop();
+        mecanumDrivetrain.stop();
     }
 
 }

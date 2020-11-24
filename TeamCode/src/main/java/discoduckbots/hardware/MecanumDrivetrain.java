@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.discoduckbots.util.NumberUtility;
+import discoduckbots.util.NumberUtility;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class MecanumDrivetrain implements DrivetrainInterface {
@@ -75,12 +75,10 @@ public class MecanumDrivetrain implements DrivetrainInterface {
     }
 
     public String getEncoderCounts(){
-        String encoderCounts = "FL: " + mFrontLeft.getCurrentPosition() +
+        return "FL: " + mFrontLeft.getCurrentPosition() +
                 "\nFR: " + mFrontRight.getCurrentPosition() +
                 "\nBL: " + mBackLeft.getCurrentPosition() +
                 "\nBR: " + mBackRight.getCurrentPosition();
-
-        return encoderCounts;
     }
 
     /**
