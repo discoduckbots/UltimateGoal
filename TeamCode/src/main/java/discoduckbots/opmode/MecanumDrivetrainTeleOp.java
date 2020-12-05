@@ -31,6 +31,7 @@ package discoduckbots.opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -80,7 +81,7 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
         intake = new Intake(intakeMotor);
 
         DcMotor shooterMotor = hardwareMap.get(DcMotor.class, "shooter");
-        Servo pusherServo = hardwareMap.get(Servo.class, "pusher");
+        CRServo pusherServo = hardwareMap.get(CRServo.class, "pusher");
         shooter = new Shooter(shooterMotor, pusherServo);
 
         DcMotor wobbleMoverMotor = hardwareMap.get(DcMotor.class, "wobbleMover");
@@ -125,7 +126,14 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
 
 
         telemetry.addData("MecanumDrivetrainTeleOp", "Stopping");
+
+        shutDown();
+    }
+
+    private void shutDown(){
         mecanumDrivetrain.stop();
+        intake.stop();
+        shooter.stop();
     }
 
 }
