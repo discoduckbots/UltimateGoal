@@ -31,6 +31,7 @@ public class Shooter {
     }
 
     private void pushRing(){
+        /* Need to only push one ring */
         pusherServo.setPower(PUSHER_POWER);
     }
 
