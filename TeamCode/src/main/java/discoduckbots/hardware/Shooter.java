@@ -9,6 +9,7 @@ public class Shooter {
 
     private static final double MOTOR_POWER = 1.0;
     private static final double PUSHER_POWER = 1.0;
+    private static final double PUSHER_TIME = 1.0;
 
     private DcMotor shooterMotor;
     private CRServo pusherServo;
@@ -31,8 +32,16 @@ public class Shooter {
     }
 
     private void pushRing(){
-        /* Need to only push one ring */
-        pusherServo.setPower(PUSHER_POWER);
+
+        long millis = System.currentTimeMillis();
+        long currentTime = millis;
+
+        while (PUSHER_TIME > (millis - currentTime) / 1000){
+            pusherServo.setPower(PUSHER_POWER);
+            currentTime = System.currentTimeMillis();
+        }
+
+        pusherServo.setPower(0);
     }
 
     public void stop(){
