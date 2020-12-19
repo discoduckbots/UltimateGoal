@@ -56,7 +56,6 @@ import discoduckbots.hardware.WobbleMover;
  */
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Mecanum OpMode", group="Linear Opmode")
-@Disabled
 public class MecanumDrivetrainTeleOp extends LinearOpMode {
 
     private static final double THROTTLE = 0.45;
@@ -84,9 +83,9 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
         CRServo pusherServo = hardwareMap.get(CRServo.class, "pusher");
         shooter = new Shooter(shooterMotor, pusherServo);
 
-        DcMotor wobbleMoverMotor = hardwareMap.get(DcMotor.class, "wobbleMover");
-        Servo wobbleGrabber = hardwareMap.get(Servo.class, "wobbleGrabber");
-        wobbleMover = new WobbleMover(wobbleMoverMotor, wobbleGrabber);
+//        DcMotor wobbleMoverMotor = hardwareMap.get(DcMotor.class, "wobbleMover");
+//        Servo wobbleGrabber = hardwareMap.get(Servo.class, "wobbleGrabber");
+//        wobbleMover = new WobbleMover(wobbleMoverMotor, wobbleGrabber);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -94,7 +93,7 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
 
             /* Gamepad 1 */
-            mecanumDrivetrain.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, THROTTLE);
+            mecanumDrivetrain.drive(-gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, THROTTLE);
 
             if (gamepad1.a) {
                 intake.intake();
@@ -109,22 +108,22 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             }
 
             /* Gamepad 2 */
-            if (gamepad2.left_stick_y < 0){
-                wobbleMover.lower(gamepad2.left_stick_y);
-            }
-            else if (gamepad2.left_stick_y > 0){
-                wobbleMover.lift(gamepad2.left_stick_y);
-            }
-            else{
-                wobbleMover.stop();
-            }
-
-            if (gamepad2.a){
-                wobbleMover.grab();
-            }
-            if (gamepad2.b){
-                wobbleMover.release();
-            }
+//            if (gamepad2.left_stick_y < 0){
+//                wobbleMover.lower(gamepad2.left_stick_y);
+//            }
+//            else if (gamepad2.left_stick_y > 0){
+//                wobbleMover.lift(gamepad2.left_stick_y);
+//            }
+//            else{
+//                wobbleMover.stop();
+//            }
+//
+//            if (gamepad2.a){
+//                wobbleMover.grab();
+//            }
+//            if (gamepad2.b){
+//                wobbleMover.release();
+//            }
         }
 
 
