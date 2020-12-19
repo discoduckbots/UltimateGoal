@@ -7,8 +7,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Shooter {
 
-    private static final double MOTOR_POWER = 1.0;
+    private static final double MOTOR_POWER = 0.65;
     private static final double PUSHER_POWER = 1.0;
+    private static final double PUSHER_TIME = 5.0;
 
     private DcMotor shooterMotor;
     private CRServo pusherServo;
@@ -17,7 +18,7 @@ public class Shooter {
         this.shooterMotor = shooterMotor;
         this.pusherServo = pusherServo;
 
-        shooterMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        shooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         pusherServo.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
@@ -31,8 +32,16 @@ public class Shooter {
     }
 
     private void pushRing(){
-        /* Need to only push one ring */
-        pusherServo.setPower(PUSHER_POWER);
+
+        long millis = System.currentTimeMillis();
+        long currentTime = millis;
+
+        while (PUSHER_TIME > (currentTime - millis) / 1000){
+            pusherServo.setPower(PUSHER_POWER);
+            currentTime = System.currentTimeMillis();
+        }
+
+        pusherServo.setPower(0);
     }
 
     public void stop(){
