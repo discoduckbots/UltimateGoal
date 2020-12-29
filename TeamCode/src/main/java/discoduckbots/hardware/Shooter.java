@@ -9,43 +9,37 @@ public class Shooter {
 
     private static final double MOTOR_POWER = 0.65;
     private static final double PUSHER_POWER = 1.0;
-    private static final double PUSHER_TIME = 5.0;
+    private static final double PUSHER_TIME = 0.1;
 
     private DcMotor shooterMotor;
-    private CRServo pusherServo;
+//    private CRServo pusherServo;
+    private Servo pusherServo;
 
-    public Shooter(DcMotor shooterMotor, CRServo pusherServo) {
+    public Shooter(DcMotor shooterMotor, Servo pusherServo) {
         this.shooterMotor = shooterMotor;
         this.pusherServo = pusherServo;
 
         shooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        pusherServo.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public void shoot() {
         startMotor();
-        pushRing();
     }
 
     private void startMotor(){
         shooterMotor.setPower(MOTOR_POWER);
     }
 
-    private void pushRing(){
+    // switch to fixed rotation 110 degree
+    public void pushRing(){
+        pusherServo.setPosition(0.55);
+    }
 
-        long millis = System.currentTimeMillis();
-        long currentTime = millis;
-
-        while (PUSHER_TIME > (currentTime - millis) / 1000){
-            pusherServo.setPower(PUSHER_POWER);
-            currentTime = System.currentTimeMillis();
-        }
-
-        pusherServo.setPower(0);
+    public void resetPusher(){
+        pusherServo.setPosition(0.85);
     }
 
     public void stop(){
         shooterMotor.setPower(0.0);
-        pusherServo.setPower(0.0);
     }
 }
