@@ -38,7 +38,7 @@ public class BlueAutonomous extends LinearOpMode {
 
 
     private void autonomousByEncoder() {
-        double autonomousSpeed = 0.5;
+        double autonomousSpeed = 0.1;
 
         boolean tensorFlowDetection = true;
         if (tensorFlowDetection) {

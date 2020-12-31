@@ -49,28 +49,28 @@ public class MecanumDrivetrain implements DrivetrainInterface {
 
     private void setMotorDirection(int direction){
         if (DIRECTION_REVERSE == direction){
-            mBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-            mBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
-            mFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-            mFrontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+            mBackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+            mBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+            mFrontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+            mFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         }
         else if (DIRECTION_STRAFE_LEFT == direction){
-            mBackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-            mBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
-            mFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-            mFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-        else if (DIRECTION_STRAFE_RIGHT == direction){
             mBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             mBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
             mFrontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
             mFrontRight.setDirection(DcMotorSimple.Direction.FORWARD);
         }
-        else{
+        else if (DIRECTION_STRAFE_RIGHT == direction){
             mBackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-            mBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
-            mFrontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+            mBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+            mFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             mFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        }
+        else{
+            mBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            mBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
+            mFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            mFrontRight.setDirection(DcMotorSimple.Direction.FORWARD);
         }
     }
 
