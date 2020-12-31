@@ -1,6 +1,5 @@
 package discoduckbots.hardware;
 
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -12,7 +11,6 @@ public class Shooter {
     private static final double PUSHER_TIME = 0.1;
 
     private DcMotor shooterMotor;
-//    private CRServo pusherServo;
     private Servo pusherServo;
 
     public Shooter(DcMotor shooterMotor, Servo pusherServo) {
