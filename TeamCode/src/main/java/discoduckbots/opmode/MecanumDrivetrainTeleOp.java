@@ -91,7 +91,7 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
 
             /* Gamepad 1 */
-            mecanumDrivetrain.drive(-gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, THROTTLE);
+            mecanumDrivetrain.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, THROTTLE);
 
             if (gamepad1.a) {
                 intake.intake();
