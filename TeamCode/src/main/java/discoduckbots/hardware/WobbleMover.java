@@ -1,5 +1,7 @@
 package discoduckbots.hardware;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -13,6 +15,15 @@ public class WobbleMover {
         this.wobbleGrabber = wobbleGrabber;
     }
 
+    public void drop(LinearOpMode opmode) {
+        wobbleMoverMotor.setPower(.2);
+        opmode.sleep(1000);
+        wobbleMoverMotor.setPower(0);
+        release();
+        wobbleMoverMotor.setPower(-.2);
+        opmode.sleep(1000);
+        wobbleMoverMotor.setPower(0);
+    }
     public void lower(double speed) {
         wobbleMoverMotor.setPower(speed);
     }
