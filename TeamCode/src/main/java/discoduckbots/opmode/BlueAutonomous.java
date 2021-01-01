@@ -38,39 +38,47 @@ public class BlueAutonomous extends LinearOpMode {
 
 
     private void autonomousByEncoder() {
-        double autonomousSpeed = 0.25;
+        double autonomousSpeed = 0.6;
 
         boolean tensorFlowDetection = true;
         if (tensorFlowDetection) {
             int distanceToMoveBack = 0;
-            TensorFlow tensorFlow = new TensorFlow();
-            RingStackDetector ringStackDetector = new RingStackDetector();
-            tensorFlow.initTensorflow(telemetry, hardwareMap);
+           // TensorFlow tensorFlow = new TensorFlow();
+            // RingStackDetector ringStackDetector = new RingStackDetector();
+            // tensorFlow.initTensorflow(telemetry, hardwareMap);
           //  int number = ringStackDetector.getSlot(tensorFlow.detect());
             int number = 0;
             if (number == 0){
                 distanceToMoveBack = 10;
                 mMecanumDrivetrain.driveByDistance(10
-                        ,MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed);
-                mMecanumDrivetrain.driveByDistance(25,  MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed);
+                        ,MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, telemetry);
+
+                     telemetry.addData("Strafing Done","");
+                     telemetry.update();
+
+                mMecanumDrivetrain.driveByDistance(25,  MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
+
+                telemetry.addData("Moving Forward Done","");
+                telemetry.update();
+
             }else if (number == 1){
 
                 distanceToMoveBack = 30;
-                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed);
-                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed);
-                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_RIGHT,autonomousSpeed);
+                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
+                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
+                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_RIGHT,autonomousSpeed, telemetry);
             }else if (number == 4){
                 distanceToMoveBack = 40;
-                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed);
-                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed);
+                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
+                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
             }
             wobbleMover.drop(this);
-            mMecanumDrivetrain.driveByDistance(distanceToMoveBack,MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed);
+            mMecanumDrivetrain.driveByDistance(distanceToMoveBack,MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, telemetry);
 
         } else {
 
             //sleep(25000);
-            mMecanumDrivetrain.driveByDistance(DISTANCE_TO_LAUNCH_LINE, MecanumDrivetrain.DIRECTION_FORWARD, autonomousSpeed);
+            mMecanumDrivetrain.driveByDistance(DISTANCE_TO_LAUNCH_LINE, MecanumDrivetrain.DIRECTION_FORWARD, autonomousSpeed, telemetry);
         }
 
         while (opModeIsActive() && mMecanumDrivetrain.isMoving()) {

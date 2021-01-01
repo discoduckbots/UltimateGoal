@@ -3,6 +3,7 @@ package discoduckbots.hardware;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import discoduckbots.util.NumberUtility;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -155,6 +156,38 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         driveByRevolution(convertDistanceToTarget(inches, direction), speed);
     }
 
+    /**
+     * Method to drive a specified distance using motor encoder functionality (includes telemetry)
+     *
+     * @param inches - The Number Of Inches to Move
+     * @param direction - The Direction to Move
+     *                  - Valid Directions:
+     *                  - MecanumDrivetrain.DIRECTION_FORWARD
+     *                  - MecanumDrivetrain.DIRECTION_REVERSE
+     *                  - MecanumDrivetrain.DIRECTION_STRAFE_LEFT
+     *                  - MecanumDrivetrain.DIRECTION_STRAFE_RIGHT
+     * @param speed - The desired motor power (most accurate at low powers < 0.25)
+     * @param telemetry - The instance of telemetry to output to
+     */
+    public void driveByDistance(int inches, int direction, double speed, Telemetry telemetry){
+        setMotorDirection(direction);
+
+        int targetPosition = convertDistanceToTarget(inches, direction);
+        telemetry.addData("Target Position:", targetPosition);
+        telemetry.update();
+
+//        driveByRevolution(targetPosition, speed);
+        driveByRevolutionWithTolerance(targetPosition, speed, telemetry);
+
+        telemetry.addData("Ending Positions:",
+                "target: " + targetPosition +
+                " FL: " + mFrontLeft.getCurrentPosition()
+                        + " FR: " + mFrontRight.getCurrentPosition()
+                        + " BL: " + mBackLeft.getCurrentPosition()
+                        + " BR: " + mBackRight.getCurrentPosition());
+        telemetry.update();
+    }
+
     private int convertDistanceToTarget(int inches, int direction){
         float target;
 
@@ -174,6 +207,40 @@ public class MecanumDrivetrain implements DrivetrainInterface {
      */
     public boolean isMoving() {
         return mFrontLeft.isBusy() || mFrontRight.isBusy() || mBackRight.isBusy() || mBackLeft.isBusy();
+    }
+
+    private void driveByRevolutionWithTolerance(int revolutions, double power, Telemetry telemetry){
+        int tolerance = 10;
+
+        int currentPosition = mFrontLeft.getCurrentPosition();
+
+        mFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        mFrontLeft.setTargetPosition(mFrontLeft.getCurrentPosition() + revolutions);
+        mFrontRight.setTargetPosition(mFrontRight.getCurrentPosition() + revolutions);
+        mBackLeft.setTargetPosition(mBackLeft.getCurrentPosition() + revolutions);
+        mBackRight.setTargetPosition(mBackRight.getCurrentPosition() + revolutions);
+
+        mFrontLeft.setPower(power);
+        mFrontRight.setPower(power);
+        mBackLeft.setPower(power);
+        mBackRight.setPower(power);
+
+        while (mFrontLeft.getTargetPosition() > mFrontLeft.getCurrentPosition() + tolerance){
+            telemetry.addData("In Loop Target Position:", mFrontLeft.getTargetPosition());
+            telemetry.addData("Current Position: ", mFrontLeft.getCurrentPosition());
+            telemetry.update();
+        }
+
+        mFrontLeft.setPower(0);
+        mFrontRight.setPower(0);
+        mBackLeft.setPower(0);
+        mBackRight.setPower(0);
+
+
     }
 
     /**

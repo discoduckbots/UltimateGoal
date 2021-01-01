@@ -29,10 +29,23 @@ public class TestTeleop extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        while (opModeIsActive()) {
+        double testSpeed = 0.4;
 
-            /* Gamepad 1 */
-            mMecanumDrivetrain.drive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, THROTTLE);
+        while (opModeIsActive()) {
+            if (gamepad1.y) {
+                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_FORWARD, testSpeed, telemetry);
+            }
+            else if (gamepad1.x) {
+                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, testSpeed, telemetry);
+            }
+            else if (gamepad1.b) {
+                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, testSpeed, telemetry);
+            }
+            else if (gamepad1.a) {
+                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_REVERSE, testSpeed, telemetry);
+            }
+
+            idle();
         }
 
         telemetry.addData("TestTeleop" , "Stopping");
