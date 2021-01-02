@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Shooter {
 
-    private static final double MOTOR_POWER = 0.65;
+    private static final double MOTOR_POWER = 0.57;
     private static final double PUSHER_POWER = 1.0;
     private static final double PUSHER_TIME = 0.1;
 

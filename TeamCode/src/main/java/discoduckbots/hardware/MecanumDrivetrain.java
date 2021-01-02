@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import discoduckbots.util.NumberUtility;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -22,6 +23,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
     private DcMotor mBackLeft;
     private DcMotor mBackRight;
     private Telemetry mTelemetry;
+    private LinearOpMode opMode;
 
     /**
      * Creates a mecanum motor using the 4 individual motors passed in as the arguments
@@ -32,6 +34,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
      * @param backRight : Back right motor
      */
     public MecanumDrivetrain(Telemetry telemetry,
+                             LinearOpMode opMode,
                              DcMotor frontLeft, DcMotor frontRight,
                              DcMotor backLeft, DcMotor backRight ) {
         mTelemetry = telemetry;
@@ -229,7 +232,9 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         mBackLeft.setPower(power);
         mBackRight.setPower(power);
 
-        while (mFrontLeft.getTargetPosition() > mFrontLeft.getCurrentPosition() + tolerance){
+        ElapsedTime startTime = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+        while ((mFrontLeft.getTargetPosition() > mFrontLeft.getCurrentPosition() + tolerance)
+        && startTime.time() < 10){
             telemetry.addData("In Loop Target Position:", mFrontLeft.getTargetPosition());
             telemetry.addData("Current Position: ", mFrontLeft.getCurrentPosition());
             telemetry.update();
@@ -239,8 +244,6 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         mFrontRight.setPower(0);
         mBackLeft.setPower(0);
         mBackRight.setPower(0);
-
-
     }
 
     /**

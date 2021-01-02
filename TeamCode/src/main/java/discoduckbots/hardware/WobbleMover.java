@@ -25,7 +25,7 @@ public class WobbleMover {
         wobbleMoverMotor.setPower(0);
     }
     public void lower(double speed) {
-        wobbleMoverMotor.setPower(speed);
+        wobbleMoverMotor.setPower(-1 * speed);
     }
 
     public void lift(double speed) {

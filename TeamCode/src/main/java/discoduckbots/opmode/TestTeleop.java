@@ -23,7 +23,7 @@ public class TestTeleop extends LinearOpMode {
         DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
         DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        mMecanumDrivetrain = new MecanumDrivetrain(telemetry, frontLeft, frontRight, backLeft, backRight);
+        mMecanumDrivetrain = new MecanumDrivetrain(telemetry, this, frontLeft, frontRight, backLeft, backRight);
 
 
         // Wait for the game to start (driver presses PLAY)

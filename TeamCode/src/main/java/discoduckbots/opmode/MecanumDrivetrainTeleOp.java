@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import discoduckbots.hardware.HardwareStore;
 import discoduckbots.hardware.Intake;
 import discoduckbots.hardware.MecanumDrivetrain;
 import discoduckbots.hardware.Shooter;
@@ -68,28 +69,16 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
-        DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        mecanumDrivetrain = new MecanumDrivetrain(telemetry, frontLeft, frontRight, backLeft, backRight);
-
-        DcMotor intakeMotor = hardwareMap.get(DcMotor.class, "intake");
-        intake = new Intake(intakeMotor);
-
-        DcMotor shooterMotor = hardwareMap.get(DcMotor.class, "shooter");
-        Servo pusherServo = hardwareMap.get(Servo.class, "pusher");
-        shooter = new Shooter(shooterMotor, pusherServo);
-
-//        DcMotor wobbleMoverMotor = hardwareMap.get(DcMotor.class, "wobbleMover");
-//        Servo wobbleGrabber = hardwareMap.get(Servo.class, "wobbleGrabber");
-//        wobbleMover = new WobbleMover(wobbleMoverMotor, wobbleGrabber);
+        HardwareStore hardwareStore = new HardwareStore(hardwareMap, telemetry, this);
+        mecanumDrivetrain = hardwareStore.getMecanumDrivetrain();
+        intake = hardwareStore.getIntake();
+        shooter = hardwareStore.getShooter();
+        wobbleMover = hardwareStore.getWobbleMover();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         while (opModeIsActive()) {
-
             /* Gamepad 1 */
             mecanumDrivetrain.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, THROTTLE);
 
@@ -112,22 +101,22 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             }
 
             /* Gamepad 2 */
-//            if (gamepad2.left_stick_y < 0){
-//                wobbleMover.lower(gamepad2.left_stick_y);
-//            }
-//            else if (gamepad2.left_stick_y > 0){
-//                wobbleMover.lift(gamepad2.left_stick_y);
-//            }
-//            else{
-//                wobbleMover.stop();
-//            }
-//
-//            if (gamepad2.a){
-//                wobbleMover.grab();
-//            }
-//            if (gamepad2.b){
-//                wobbleMover.release();
-//            }
+            if (gamepad1.dpad_down){
+               wobbleMover.lower(1);
+           }
+           else if (gamepad1.dpad_up){
+              wobbleMover.lift(1);
+           }
+            else{
+              wobbleMover.stop();
+           }
+
+           if (gamepad1.left_bumper){
+                wobbleMover.grab();
+            }
+            if (gamepad1.right_bumper){
+                wobbleMover.release();
+           }
         }
 
 

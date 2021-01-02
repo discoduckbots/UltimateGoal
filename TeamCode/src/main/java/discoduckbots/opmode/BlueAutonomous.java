@@ -1,13 +1,13 @@
 package discoduckbots.opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import discoduckbots.hardware.HardwareStore;
+import discoduckbots.hardware.Intake;
 import discoduckbots.hardware.MecanumDrivetrain;
+import discoduckbots.hardware.Shooter;
 import discoduckbots.hardware.WobbleMover;
-import discoduckbots.sensors.TensorFlow;
 
 import static discoduckbots.measurements.Measurements.DISTANCE_TO_LAUNCH_LINE;
 
@@ -16,19 +16,16 @@ public class BlueAutonomous extends LinearOpMode {
 
 
     private ElapsedTime runtime = new ElapsedTime();
-    private MecanumDrivetrain mMecanumDrivetrain = null;
+    private MecanumDrivetrain mecanumDrivetrain = null;
     private WobbleMover wobbleMover = null;
+    private Shooter shooter = null;
     @Override
     public void runOpMode() throws InterruptedException {
         // initialize hardware
-        DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
-        DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        mMecanumDrivetrain = new MecanumDrivetrain(telemetry, frontLeft, frontRight, backLeft, backRight);
-        DcMotor wobbleMoverMotor = hardwareMap.get(DcMotor.class, "wobbleMover");
-        Servo wobbleGrabber = hardwareMap.get(Servo.class, "wobbleGrabber");
-        wobbleMover = new WobbleMover(wobbleMoverMotor, wobbleGrabber);
+        HardwareStore hardwareStore = new HardwareStore(hardwareMap, telemetry, this);
+        mecanumDrivetrain = hardwareStore.getMecanumDrivetrain();
+        shooter = hardwareStore.getShooter();
+        wobbleMover = hardwareStore.getWobbleMover();
         // wait for start
         waitForStart();
         runtime.reset();
@@ -39,24 +36,27 @@ public class BlueAutonomous extends LinearOpMode {
 
     private void autonomousByEncoder() {
         double autonomousSpeed = 0.6;
-
+        int distanceToStrafe = 0;
         boolean tensorFlowDetection = true;
         if (tensorFlowDetection) {
             int distanceToMoveBack = 0;
+
+
            // TensorFlow tensorFlow = new TensorFlow();
             // RingStackDetector ringStackDetector = new RingStackDetector();
             // tensorFlow.initTensorflow(telemetry, hardwareMap);
           //  int number = ringStackDetector.getSlot(tensorFlow.detect());
             int number = 0;
             if (number == 0){
-                distanceToMoveBack = 10;
-                mMecanumDrivetrain.driveByDistance(10
+                distanceToMoveBack = 0;
+                distanceToStrafe = 13;
+                mecanumDrivetrain.driveByDistance(5
                         ,MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, telemetry);
 
                      telemetry.addData("Strafing Done","");
                      telemetry.update();
 
-                mMecanumDrivetrain.driveByDistance(25,  MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistance(28,  MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
 
                 telemetry.addData("Moving Forward Done","");
                 telemetry.update();
@@ -64,27 +64,42 @@ public class BlueAutonomous extends LinearOpMode {
             }else if (number == 1){
 
                 distanceToMoveBack = 30;
-                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
-                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
-                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_RIGHT,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_RIGHT,autonomousSpeed, telemetry);
             }else if (number == 4){
                 distanceToMoveBack = 40;
-                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
-                mMecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
+                distanceToStrafe = 10;
+                mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
             }
+            telemetry.addData("Starting wobble mover", "");
+            telemetry.update();
             wobbleMover.drop(this);
-            mMecanumDrivetrain.driveByDistance(distanceToMoveBack,MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, telemetry);
-
+            telemetry.addData("finished wobble mover", "");
+            telemetry.update();
+            if (distanceToMoveBack > 0) {
+                mecanumDrivetrain.driveByDistance(distanceToMoveBack, MecanumDrivetrain.DIRECTION_FORWARD, autonomousSpeed, telemetry);
+            }
         } else {
-
             //sleep(25000);
-            mMecanumDrivetrain.driveByDistance(DISTANCE_TO_LAUNCH_LINE, MecanumDrivetrain.DIRECTION_FORWARD, autonomousSpeed, telemetry);
+            mecanumDrivetrain.driveByDistance(DISTANCE_TO_LAUNCH_LINE, MecanumDrivetrain.DIRECTION_FORWARD, autonomousSpeed, telemetry);
         }
 
-        while (opModeIsActive() && mMecanumDrivetrain.isMoving()) {
+        if (distanceToStrafe > 0) {
+            mecanumDrivetrain.driveByDistance(distanceToStrafe, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed, telemetry);
+        }
+
+        shoot();
+
+        while (opModeIsActive() && mecanumDrivetrain.isMoving()) {
             telemetry.addData("Step 6", "Strafe left 55\"");
             telemetry.update();
         }
-        mMecanumDrivetrain.stop();
+        mecanumDrivetrain.stop();
+    }
+
+    private void shoot() {
+
     }
 }
