@@ -196,7 +196,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
 
         int targetPosition = convertDistanceToTarget(inches, direction);
 
-        driveByRevolutionWithTolerance(targetPosition, baseSpeed, imu, targetHeading);
+        driveByRevolutionWithTolerance(targetPosition, baseSpeed, imu, targetHeading, direction);
     }
 
     private int convertDistanceToTarget(int inches, int direction){
@@ -220,7 +220,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         return mFrontLeft.isBusy() || mFrontRight.isBusy() || mBackRight.isBusy() || mBackLeft.isBusy();
     }
 
-    private void driveByRevolutionWithTolerance(int revolutions, double basePower, IMU imu, double targetHeading){
+    private void driveByRevolutionWithTolerance(int revolutions, double basePower, IMU imu, double targetHeading, int direction){
         int tolerance = 10;
 
         mFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -248,17 +248,15 @@ public class MecanumDrivetrain implements DrivetrainInterface {
             //Negative Value is Go Right - Positive is Left
             double adjustment = imu.headingAdjustment(targetHeading);
 
-            if (adjustment < 0){ // Left Wheels Should Go Faster
+            if (DIRECTION_FORWARD == direction || DIRECTION_REVERSE == direction) {
                 mFrontLeft.setPower(basePower - adjustment);
                 mBackLeft.setPower(basePower - adjustment);
                 mFrontRight.setPower(basePower + adjustment);
                 mBackRight.setPower(basePower + adjustment);
             }
-            else{ // Right Wheels Should Go Faster
-                mFrontLeft.setPower(basePower + adjustment);
-                mBackLeft.setPower(basePower + adjustment);
-                mFrontRight.setPower(basePower - adjustment);
-                mBackRight.setPower(basePower - adjustment);
+            else{
+                mBackLeft.setPower(basePower - adjustment);
+                mFrontRight.setPower(basePower + adjustment);
             }
 
             revolutionsRemaining = mFrontLeft.getTargetPosition() - mFrontLeft.getCurrentPosition();
