@@ -16,11 +16,11 @@ public class WobbleMover {
     }
 
     public void drop(LinearOpMode opmode) {
-        wobbleMoverMotor.setPower(.2);
-        opmode.sleep(1000);
+        wobbleMoverMotor.setPower(-.5);
+        opmode.sleep(1500);
         wobbleMoverMotor.setPower(0);
         release();
-        wobbleMoverMotor.setPower(-.2);
+        wobbleMoverMotor.setPower(.5);
         opmode.sleep(1000);
         wobbleMoverMotor.setPower(0);
     }
@@ -41,6 +41,6 @@ public class WobbleMover {
     }
 
     public void release() {
-        wobbleGrabber.setPosition(135);
+        wobbleGrabber.setPosition(0.75);
     }
 }

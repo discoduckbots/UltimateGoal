@@ -102,10 +102,10 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
 
             /* Gamepad 2 */
             if (gamepad1.dpad_down){
-               wobbleMover.lower(1);
+               wobbleMover.lower(0.8);
            }
            else if (gamepad1.dpad_up){
-              wobbleMover.lift(1);
+              wobbleMover.lift(0.8);
            }
             else{
               wobbleMover.stop();

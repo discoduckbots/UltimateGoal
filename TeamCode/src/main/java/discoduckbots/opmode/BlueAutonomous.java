@@ -30,6 +30,7 @@ public class BlueAutonomous extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        wobbleMover.grab();
         autonomousByEncoder();
     }
 
@@ -50,13 +51,13 @@ public class BlueAutonomous extends LinearOpMode {
             if (number == 0){
                 distanceToMoveBack = 0;
                 distanceToStrafe = 13;
-                mecanumDrivetrain.driveByDistance(5
+                mecanumDrivetrain.driveByDistance(6
                         ,MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, telemetry);
 
                      telemetry.addData("Strafing Done","");
                      telemetry.update();
 
-                mecanumDrivetrain.driveByDistance(28,  MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistance(22,  MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
 
                 telemetry.addData("Moving Forward Done","");
                 telemetry.update();
@@ -64,13 +65,13 @@ public class BlueAutonomous extends LinearOpMode {
             }else if (number == 1){
 
                 distanceToMoveBack = 30;
-                mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
-                mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistance(6,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistance(29,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
                 mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_RIGHT,autonomousSpeed, telemetry);
             }else if (number == 4){
                 distanceToMoveBack = 40;
                 distanceToStrafe = 10;
-                mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistance(6,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
                 mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
             }
             telemetry.addData("Starting wobble mover", "");
@@ -92,6 +93,8 @@ public class BlueAutonomous extends LinearOpMode {
 
         shoot();
 
+        mecanumDrivetrain.driveByDistance(5,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed);
+
         while (opModeIsActive() && mecanumDrivetrain.isMoving()) {
             telemetry.addData("Step 6", "Strafe left 55\"");
             telemetry.update();
@@ -100,6 +103,17 @@ public class BlueAutonomous extends LinearOpMode {
     }
 
     private void shoot() {
+        mecanumDrivetrain.turnLeft(this, 90);
+        shooter.shoot();
+        sleep((long)(1000 * 3));
 
+        for (int index = 0; index < 4 ; index++) {
+            telemetry.addData("shoot ", index);
+            telemetry.update();
+            sleep((long)(1000 * 1));
+            shooter.pushRing();
+            sleep((long)(1000 * 1));
+            shooter.resetPusher();
+        }
     }
 }

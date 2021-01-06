@@ -99,7 +99,19 @@ public class MecanumDrivetrain implements DrivetrainInterface {
 
         drive(throttledX, throttledY, throttledRotation);
     }
+    public void turnLeft(LinearOpMode opMode, int degree){
+        setMotorDirection(DIRECTION_FORWARD);
+        drive(0,0,-.5);
+        opMode.sleep((long)(750 * 1));
+        stop();
+    }
 
+    public void turnRight(LinearOpMode opMode, int degree){
+        setMotorDirection(DIRECTION_FORWARD);
+        drive(0,0,.5);
+        opMode.sleep((long)(750 * 1));
+        stop();
+    }
     /**
      * This function makes the mecanum motor drive using the joystick
      * @param speedX - the x value of the joystick controlling straf
