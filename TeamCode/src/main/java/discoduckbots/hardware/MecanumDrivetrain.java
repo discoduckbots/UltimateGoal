@@ -191,6 +191,14 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         telemetry.update();
     }
 
+    public void driveByDistance(int inches, int direction, double baseSpeed, IMU imu, double targetHeading){
+        setMotorDirection(direction);
+
+        int targetPosition = convertDistanceToTarget(inches, direction);
+
+        driveByRevolutionWithTolerance(targetPosition, baseSpeed, imu, targetHeading);
+    }
+
     private int convertDistanceToTarget(int inches, int direction){
         float target;
 
@@ -210,6 +218,52 @@ public class MecanumDrivetrain implements DrivetrainInterface {
      */
     public boolean isMoving() {
         return mFrontLeft.isBusy() || mFrontRight.isBusy() || mBackRight.isBusy() || mBackLeft.isBusy();
+    }
+
+    private void driveByRevolutionWithTolerance(int revolutions, double basePower, IMU imu, double targetHeading){
+        int tolerance = 10;
+
+        mFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        mFrontLeft.setTargetPosition(mFrontLeft.getCurrentPosition() + revolutions);
+        mFrontRight.setTargetPosition(mFrontRight.getCurrentPosition() + revolutions);
+        mBackLeft.setTargetPosition(mBackLeft.getCurrentPosition() + revolutions);
+        mBackRight.setTargetPosition(mBackRight.getCurrentPosition() + revolutions);
+
+        mFrontLeft.setPower(basePower);
+        mFrontRight.setPower(basePower);
+        mBackLeft.setPower(basePower);
+        mBackRight.setPower(basePower);
+
+        int revolutionsRemaining = revolutions;
+        double currentPower = basePower;
+
+        ElapsedTime timeoutTimer = new ElapsedTime();
+
+        while (revolutionsRemaining > tolerance && opMode.opModeIsActive() && timeoutTimer.seconds() < 0.75) {
+
+            //Negative Value is Go Right - Positive is Left
+            double adjustment = imu.headingAdjustment(targetHeading);
+
+            if (adjustment < 0){ // Left Wheels Should Go Faster
+                mFrontLeft.setPower(basePower - adjustment);
+                mBackLeft.setPower(basePower - adjustment);
+                mFrontRight.setPower(basePower + adjustment);
+                mBackRight.setPower(basePower + adjustment);
+            }
+            else{ // Right Wheels Should Go Faster
+                mFrontLeft.setPower(basePower + adjustment);
+                mBackLeft.setPower(basePower + adjustment);
+                mFrontRight.setPower(basePower - adjustment);
+                mBackRight.setPower(basePower - adjustment);
+            }
+
+            revolutionsRemaining = mFrontLeft.getTargetPosition() - mFrontLeft.getCurrentPosition();
+            timeoutTimer.reset();
+        }
     }
 
     private void driveByRevolutionWithTolerance(int revolutions, double power, Telemetry telemetry){
