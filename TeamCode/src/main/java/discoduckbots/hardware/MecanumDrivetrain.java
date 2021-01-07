@@ -105,7 +105,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
     public void turnLeft(LinearOpMode opMode, int degree){
         setMotorDirection(DIRECTION_FORWARD);
         drive(0,0,-.5);
-        opMode.sleep((long)(500 * 1));
+        opMode.sleep((long)(550 * 1));
         stop();
     }
 
@@ -347,10 +347,56 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         stop();
     }
 
+    public void turnLeftGyro(double basePower, IMU imu, double targetHeading,
+                          int direction, Telemetry telemetry){
+        double startHeading = imu.getIMUHeading();
+        telemetry.addData("IMU current: " , imu.getIMUHeading());
+        telemetry.update();
+        int tolerance = 10;
+
+        mFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+        mFrontLeft.setPower(basePower);
+        mFrontRight.setPower(basePower);
+        mBackLeft.setPower(basePower);
+        mBackRight.setPower(basePower);
+
+
+        double currentPower = basePower;
+
+        ElapsedTime timeoutTimer = new ElapsedTime();
+        //Negative Value is Go Right - Positive is Left
+        double adjustment = imu.headingAdjustment(targetHeading);
+        while (adjustment != 0 && opMode.opModeIsActive() && timeoutTimer.seconds() < 0.75) {
+            telemetry.addData("IMU adjustment: " , " " + startHeading + " " + adjustment);
+            telemetry.update();
+            if (DIRECTION_FORWARD == direction || DIRECTION_REVERSE == direction) {
+                mFrontLeft.setPower(basePower + adjustment);
+                mBackLeft.setPower(basePower + adjustment);
+                mFrontRight.setPower(basePower - adjustment);
+                mBackRight.setPower(basePower - adjustment);
+            }
+            else{
+                mBackLeft.setPower(basePower - adjustment);
+                mFrontRight.setPower(basePower + adjustment);
+            }
+
+            //Negative Value is Go Right - Positive is Left
+            adjustment = imu.headingAdjustment(targetHeading);
+
+        }
+
+        stop();
+    }
     private void driveByRevolutionWithTolerance(int revolutions, double power, Telemetry telemetry){
         int tolerance = 10;
 
         int currentPosition = mFrontLeft.getCurrentPosition();
+
 
         mFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

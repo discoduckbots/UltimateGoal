@@ -88,18 +88,29 @@ public class BlueAutonomous extends LinearOpMode {
         }
 
         if (distanceToStrafe > 0) {
-            mecanumDrivetrain.driveByDistance(distanceToStrafe, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed, telemetry);
+            mecanumDrivetrain.driveByDistance(distanceToStrafe,
+                    MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed, telemetry);
         }
 
         shoot();
 
-        mecanumDrivetrain.driveByDistance(5,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed);
+        telemetry.addData("Finished Shooting", "");
+        telemetry.update();
 
+        mecanumDrivetrain.stop();
+        mecanumDrivetrain.driveByDistance(3, MecanumDrivetrain.DIRECTION_STRAFE_LEFT,
+                autonomousSpeed, telemetry);
         mecanumDrivetrain.stop();
     }
 
     private void shoot() {
-        mecanumDrivetrain.turnLeft(this, 180);
+        double autonomousSpeed = 0.6;
+        mecanumDrivetrain.turnLeft(this, 190);
+
+        mecanumDrivetrain.driveByDistance(10, MecanumDrivetrain.DIRECTION_STRAFE_LEFT,
+                autonomousSpeed, telemetry);
+
+
         shooter.shoot();
         sleep((long)(1000 * 3));
 

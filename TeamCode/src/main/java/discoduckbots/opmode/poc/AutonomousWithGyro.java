@@ -49,15 +49,20 @@ public class AutonomousWithGyro extends LinearOpMode {
         telemetry.addLine()
                 .addData("Strafing Left", "5 inches");
         telemetry.update();
-        mecanumDrivetrain.driveByDistance(5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, imu, 0, telemetry);
+        mecanumDrivetrain.driveByDistance(5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT,
+                autonomousSpeed, imu, 0, telemetry);
         telemetry.addLine()
                 .addData("Driving Reverse Until Red Tape", " ");
         telemetry.update();
         //int direction, double baseSpeed, IMU imu, double targetHeading, Telemetry telemetry, NormalizedColorSensor colorSensor
-        mecanumDrivetrain.driveWithColorSensor(MecanumDrivetrain.DIRECTION_REVERSE, 0.2, imu, 0, telemetry, colorSensor);
+        mecanumDrivetrain.driveWithColorSensor(MecanumDrivetrain.DIRECTION_REVERSE,
+                0.2, imu, 0, telemetry, colorSensor);
 //        mecanumDrivetrain.driveByDistance(14, MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, imu, 0, telemetry);
         telemetry.addLine()
                 .addData("Driving Complete", "Done");
         telemetry.update();
+
+        mecanumDrivetrain.turnLeftGyro(0.5, imu, 90,
+                MecanumDrivetrain.DIRECTION_STRAFE_LEFT, telemetry);
     }
 }
