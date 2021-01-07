@@ -34,7 +34,7 @@ public class Shooter {
     }
 
     public void resetPusher(){
-        pusherServo.setPosition(0.85);
+        pusherServo.setPosition(0.865);
     }
 
     public void stop(){

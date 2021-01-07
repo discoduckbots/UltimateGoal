@@ -12,6 +12,7 @@ public class HardwareStore {
     Intake intake;
     Shooter shooter;
     WobbleMover wobbleMover;
+
     public HardwareStore(HardwareMap hardwareMap, Telemetry telemetry, LinearOpMode opMode) {
         DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");

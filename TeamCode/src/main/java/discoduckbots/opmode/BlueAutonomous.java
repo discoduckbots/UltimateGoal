@@ -95,15 +95,11 @@ public class BlueAutonomous extends LinearOpMode {
 
         mecanumDrivetrain.driveByDistance(5,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed);
 
-        while (opModeIsActive() && mecanumDrivetrain.isMoving()) {
-            telemetry.addData("Step 6", "Strafe left 55\"");
-            telemetry.update();
-        }
         mecanumDrivetrain.stop();
     }
 
     private void shoot() {
-        mecanumDrivetrain.turnLeft(this, 90);
+        mecanumDrivetrain.turnLeft(this, 180);
         shooter.shoot();
         sleep((long)(1000 * 3));
 

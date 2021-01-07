@@ -17,7 +17,7 @@ public class WobbleMover {
 
     public void drop(LinearOpMode opmode) {
         wobbleMoverMotor.setPower(-.5);
-        opmode.sleep(1500);
+        opmode.sleep(1400);
         wobbleMoverMotor.setPower(0);
         release();
         wobbleMoverMotor.setPower(.5);
