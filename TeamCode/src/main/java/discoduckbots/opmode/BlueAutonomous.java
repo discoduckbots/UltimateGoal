@@ -51,13 +51,12 @@ public class BlueAutonomous extends LinearOpMode {
             if (number == 0){
                 distanceToMoveBack = 0;
                 distanceToStrafe = 13;
-                mecanumDrivetrain.driveByDistance(6
-                        ,MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistanceWithTolerance(6, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed);
 
                      telemetry.addData("Strafing Done","");
                      telemetry.update();
 
-                mecanumDrivetrain.driveByDistance(22,  MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistanceWithTolerance(22,  MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed);
 
                 telemetry.addData("Moving Forward Done","");
                 telemetry.update();
@@ -65,14 +64,14 @@ public class BlueAutonomous extends LinearOpMode {
             }else if (number == 1){
 
                 distanceToMoveBack = 30;
-                mecanumDrivetrain.driveByDistance(6,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
-                mecanumDrivetrain.driveByDistance(29,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
-                mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_STRAFE_RIGHT,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistanceWithTolerance(6,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed);
+                mecanumDrivetrain.driveByDistanceWithTolerance(29,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed);
+                mecanumDrivetrain.driveByDistanceWithTolerance(10,MecanumDrivetrain.DIRECTION_STRAFE_RIGHT,autonomousSpeed);
             }else if (number == 4){
                 distanceToMoveBack = 40;
                 distanceToStrafe = 10;
-                mecanumDrivetrain.driveByDistance(6,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed, telemetry);
-                mecanumDrivetrain.driveByDistance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistanceWithTolerance(6,MecanumDrivetrain.DIRECTION_STRAFE_LEFT,autonomousSpeed);
+                mecanumDrivetrain.driveByDistanceWithTolerance(10,MecanumDrivetrain.DIRECTION_REVERSE,autonomousSpeed);
             }
             telemetry.addData("Starting wobble mover", "");
             telemetry.update();
@@ -80,16 +79,15 @@ public class BlueAutonomous extends LinearOpMode {
             telemetry.addData("finished wobble mover", "");
             telemetry.update();
             if (distanceToMoveBack > 0) {
-                mecanumDrivetrain.driveByDistance(distanceToMoveBack, MecanumDrivetrain.DIRECTION_FORWARD, autonomousSpeed, telemetry);
+                mecanumDrivetrain.driveByDistanceWithTolerance(distanceToMoveBack, MecanumDrivetrain.DIRECTION_FORWARD, autonomousSpeed);
             }
         } else {
             //sleep(25000);
-            mecanumDrivetrain.driveByDistance(DISTANCE_TO_LAUNCH_LINE, MecanumDrivetrain.DIRECTION_FORWARD, autonomousSpeed, telemetry);
+            mecanumDrivetrain.driveByDistanceWithTolerance(DISTANCE_TO_LAUNCH_LINE, MecanumDrivetrain.DIRECTION_FORWARD, autonomousSpeed);
         }
 
         if (distanceToStrafe > 0) {
-            mecanumDrivetrain.driveByDistance(distanceToStrafe,
-                    MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed, telemetry);
+            mecanumDrivetrain.driveByDistanceWithTolerance(distanceToStrafe, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed);
         }
 
         shoot();
@@ -98,8 +96,7 @@ public class BlueAutonomous extends LinearOpMode {
         telemetry.update();
 
         mecanumDrivetrain.stop();
-        mecanumDrivetrain.driveByDistance(3, MecanumDrivetrain.DIRECTION_STRAFE_LEFT,
-                autonomousSpeed, telemetry);
+        mecanumDrivetrain.driveByDistanceWithTolerance(1, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed);
         mecanumDrivetrain.stop();
     }
 
@@ -107,9 +104,7 @@ public class BlueAutonomous extends LinearOpMode {
         double autonomousSpeed = 0.6;
         mecanumDrivetrain.turnLeft(this, 190);
 
-        mecanumDrivetrain.driveByDistance(10, MecanumDrivetrain.DIRECTION_STRAFE_LEFT,
-                autonomousSpeed, telemetry);
-
+        mecanumDrivetrain.driveByDistanceWithTolerance(10, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed);
 
         shooter.shoot();
         sleep((long)(1000 * 3));
@@ -117,9 +112,9 @@ public class BlueAutonomous extends LinearOpMode {
         for (int index = 0; index < 4 ; index++) {
             telemetry.addData("shoot ", index);
             telemetry.update();
-            sleep((long)(1000 * 1));
+            sleep((long)(1500 * 1));
             shooter.pushRing();
-            sleep((long)(1000 * 1));
+            sleep((long)(1500 * 1));
             shooter.resetPusher();
         }
     }

@@ -32,20 +32,20 @@ public class TestTeleop extends LinearOpMode {
         double testSpeed = 0.4;
 
         while (opModeIsActive()) {
-            if (gamepad1.y) {
-                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_FORWARD, testSpeed, telemetry);
-            }
-            else if (gamepad1.x) {
-                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, testSpeed, telemetry);
-            }
-            else if (gamepad1.b) {
-                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, testSpeed, telemetry);
-            }
-            else if (gamepad1.a) {
-                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_REVERSE, testSpeed, telemetry);
-            }
-
-            idle();
+//            if (gamepad1.y) {
+//                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_FORWARD, testSpeed, telemetry);
+//            }
+//            else if (gamepad1.x) {
+//                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, testSpeed, telemetry);
+//            }
+//            else if (gamepad1.b) {
+//                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, testSpeed, telemetry);
+//            }
+//            else if (gamepad1.a) {
+//                mMecanumDrivetrain.driveByDistance(20, MecanumDrivetrain.DIRECTION_REVERSE, testSpeed, telemetry);
+//            }
+//
+//            idle();
         }
 
         telemetry.addData("TestTeleop" , "Stopping");

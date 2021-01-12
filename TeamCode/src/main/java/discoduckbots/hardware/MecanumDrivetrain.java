@@ -3,7 +3,6 @@ package discoduckbots.hardware;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -26,10 +25,16 @@ public class MecanumDrivetrain implements DrivetrainInterface {
     private DcMotor mBackRight;
     private Telemetry mTelemetry;
     private LinearOpMode opMode;
+    private IMU imu;
+    private NormalizedColorSensor colorSensor;
+
 
     /**
-     * Creates a mecanum motor using the 4 individual motors passed in as the arguments
+     * @deprecated Use MecanumDrivetrain(telemetry, opMode, imu, colorSensor, frontLeft, frontRight, backLeft, backRight)
+     *
+     * Creates a mecanum motor using the 4 individual motors passed in as the arguments, but with no imu or color sensor
      * @param telemetry : Telemetry to send messages to the Driver Control
+     * @param opMode : the OpMode this is being used in
      * @param frontLeft : Front left motor
      * @param frontRight : Front right motor
      * @param backLeft : Back left motor
@@ -39,12 +44,34 @@ public class MecanumDrivetrain implements DrivetrainInterface {
                              LinearOpMode opMode,
                              DcMotor frontLeft, DcMotor frontRight,
                              DcMotor backLeft, DcMotor backRight ) {
+        this(telemetry, opMode, null, null, frontLeft, frontRight, backLeft, backRight);
+    }
+
+    /**
+     * Creates a mecanum motor using the 4 individual motors passed in as the arguments
+     * @param telemetry : Telemetry to send messages to the Driver Control
+     * @param opMode : the OpMode this is being used in
+     * @param imu : the Inertial Measurement Unit from the Rev/Control Hub
+     * @param colorSensor : the NormalizedColorSensor
+     * @param frontLeft : Front left motor
+     * @param frontRight : Front right motor
+     * @param backLeft : Back left motor
+     * @param backRight : Back right motor
+     */
+    public MecanumDrivetrain(Telemetry telemetry,
+                             LinearOpMode opMode,
+                             IMU imu,
+                             NormalizedColorSensor colorSensor,
+                             DcMotor frontLeft, DcMotor frontRight,
+                             DcMotor backLeft, DcMotor backRight ) {
         mTelemetry = telemetry;
         mFrontLeft = frontLeft;
         mFrontRight = frontRight;
         mBackLeft = backLeft;
         mBackRight = backRight;
         this.opMode = opMode;
+        this.imu = imu;
+        this.colorSensor = colorSensor;
 
         setMotorDirection(DIRECTION_FORWARD);
 
@@ -81,13 +108,6 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         }
     }
 
-    public String getEncoderCounts(){
-        return "FL: " + mFrontLeft.getCurrentPosition() +
-                "\nFR: " + mFrontRight.getCurrentPosition() +
-                "\nBL: " + mBackLeft.getCurrentPosition() +
-                "\nBR: " + mBackRight.getCurrentPosition();
-    }
-
     /**
      * Overload of drive method that allows for throttling of power
      * @param speedX - the x value of the joystick controlling strafe
@@ -105,7 +125,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
     public void turnLeft(LinearOpMode opMode, int degree){
         setMotorDirection(DIRECTION_FORWARD);
         drive(0,0,-.5);
-        opMode.sleep((long)(550 * 1));
+        opMode.sleep((long)(495 * 1));
         stop();
     }
 
@@ -184,39 +204,37 @@ public class MecanumDrivetrain implements DrivetrainInterface {
      *                  - MecanumDrivetrain.DIRECTION_STRAFE_LEFT
      *                  - MecanumDrivetrain.DIRECTION_STRAFE_RIGHT
      * @param speed - The desired motor power (most accurate at low powers < 0.25)
-     * @param telemetry - The instance of telemetry to output to
      */
-    public void driveByDistance(int inches, int direction, double speed, Telemetry telemetry){
+    public void driveByDistanceWithTolerance(int inches, int direction, double speed){
         setMotorDirection(direction);
 
         int targetPosition = convertDistanceToTarget(inches, direction);
-        telemetry.addData("Target Position:", targetPosition);
-        telemetry.update();
+        mTelemetry.addData("Target Position:", targetPosition);
+        mTelemetry.update();
 
-//        driveByRevolution(targetPosition, speed);
-        driveByRevolutionWithTolerance(targetPosition, speed, telemetry);
+        driveByRevolutionWithTolerance(targetPosition, speed);
 
-        telemetry.addData("Ending Positions:",
+        mTelemetry.addData("Ending Positions:",
                 "target: " + targetPosition +
                 " FL: " + mFrontLeft.getCurrentPosition()
                         + " FR: " + mFrontRight.getCurrentPosition()
                         + " BL: " + mBackLeft.getCurrentPosition()
                         + " BR: " + mBackRight.getCurrentPosition());
-        telemetry.update();
+        mTelemetry.update();
     }
 
-    public void driveByDistance(int inches, int direction, double baseSpeed, IMU imu, double targetHeading, Telemetry telemetry){
+    public void driveByGyro(int inches, int direction, double baseSpeed, double targetHeading){
         setMotorDirection(direction);
 
         int targetPosition = convertDistanceToTarget(inches, direction);
 
-        driveByRevolutionWithTolerance(targetPosition, baseSpeed, imu, targetHeading, direction, telemetry);
+        driveByRevolutionWithGyro(targetPosition, baseSpeed, targetHeading, direction);
     }
 
-    public void driveWithColorSensor(int direction, double baseSpeed, IMU imu, double targetHeading, Telemetry telemetry, NormalizedColorSensor colorSensor){
+    public void driveWithColorSensor(int direction, double baseSpeed, double targetHeading){
         setMotorDirection(direction);
 
-        driveUntilColor(baseSpeed, imu, targetHeading, direction, telemetry, colorSensor);
+        driveUntilColor(baseSpeed, targetHeading, direction);
     }
 
     private int convertDistanceToTarget(int inches, int direction){
@@ -240,7 +258,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         return mFrontLeft.isBusy() || mFrontRight.isBusy() || mBackRight.isBusy() || mBackLeft.isBusy();
     }
 
-    private void driveUntilColor(double basePower, IMU imu, double targetHeading, int direction, Telemetry telemetry, NormalizedColorSensor colorSensor){
+    private void driveUntilColor(double basePower, double targetHeading, int direction){
         int tolerance = 10;
 
         mFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -256,16 +274,9 @@ public class MecanumDrivetrain implements DrivetrainInterface {
 
         double currentPower = basePower;
 
-        ElapsedTime timeoutTimer = new ElapsedTime();
-
         int redCount = 0;
 
-        while (redCount < 1 && opMode.opModeIsActive() && timeoutTimer.seconds() < 0.75) {
-
-            telemetry.addLine()
-                    .addData("Red Line Count", redCount);
-            telemetry.update();
-
+        while (redCount < 1 && opMode.opModeIsActive()) {
             NormalizedRGBA colors = colorSensor.getNormalizedColors();
             if (isRed(colors)){
                 redCount++;
@@ -285,8 +296,6 @@ public class MecanumDrivetrain implements DrivetrainInterface {
                 mBackLeft.setPower(basePower - adjustment);
                 mFrontRight.setPower(basePower + adjustment);
             }
-
-            timeoutTimer.reset();
         }
         stop();
     }
@@ -300,7 +309,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         return false;
     }
 
-    private void driveByRevolutionWithTolerance(int revolutions, double basePower, IMU imu, double targetHeading, int direction, Telemetry telemetry){
+    private void driveByRevolutionWithGyro(int revolutions, double basePower, double targetHeading, int direction){
         int tolerance = 10;
         int revolutionsRemaining = revolutions;
 
@@ -322,9 +331,10 @@ public class MecanumDrivetrain implements DrivetrainInterface {
 
         double currentPower = basePower;
 
-        ElapsedTime timeoutTimer = new ElapsedTime();
-
-        while (revolutionsRemaining > tolerance && opMode.opModeIsActive() && timeoutTimer.seconds() < 0.75) {
+        while (mFrontLeft.getTargetPosition() > mFrontLeft.getCurrentPosition() + tolerance){
+            mTelemetry.addData("In Loop Target Position:", mFrontLeft.getTargetPosition());
+            mTelemetry.addData("Current Position: ", mFrontLeft.getCurrentPosition());
+            mTelemetry.update();
 
             //Negative Value is Go Right - Positive is Left
             double adjustment = imu.headingAdjustment(targetHeading);
@@ -339,10 +349,27 @@ public class MecanumDrivetrain implements DrivetrainInterface {
                 mBackLeft.setPower(basePower - adjustment);
                 mFrontRight.setPower(basePower + adjustment);
             }
-
-            revolutionsRemaining = mFrontLeft.getTargetPosition() - mFrontLeft.getCurrentPosition();
-            timeoutTimer.reset();
         }
+
+
+//        while (revolutionsRemaining > tolerance && opMode.opModeIsActive()) {
+//
+//            //Negative Value is Go Right - Positive is Left
+//            double adjustment = imu.headingAdjustment(targetHeading);
+//
+//            if (DIRECTION_FORWARD == direction || DIRECTION_REVERSE == direction) {
+//                mFrontLeft.setPower(basePower + adjustment);
+//                mBackLeft.setPower(basePower + adjustment);
+//                mFrontRight.setPower(basePower - adjustment);
+//                mBackRight.setPower(basePower - adjustment);
+//            }
+//            else{
+//                mBackLeft.setPower(basePower - adjustment);
+//                mFrontRight.setPower(basePower + adjustment);
+//            }
+//
+//            revolutionsRemaining = mFrontLeft.getTargetPosition() - mFrontLeft.getCurrentPosition();
+//        }
 
         stop();
     }
@@ -392,11 +419,8 @@ public class MecanumDrivetrain implements DrivetrainInterface {
 
         stop();
     }
-    private void driveByRevolutionWithTolerance(int revolutions, double power, Telemetry telemetry){
+    private void driveByRevolutionWithTolerance(int revolutions, double power){
         int tolerance = 10;
-
-        int currentPosition = mFrontLeft.getCurrentPosition();
-
 
         mFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -416,9 +440,9 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         ElapsedTime startTime = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
         while ((mFrontLeft.getTargetPosition() > mFrontLeft.getCurrentPosition() + tolerance)
         && startTime.time() < 10){
-            telemetry.addData("In Loop Target Position:", mFrontLeft.getTargetPosition());
-            telemetry.addData("Current Position: ", mFrontLeft.getCurrentPosition());
-            telemetry.update();
+            mTelemetry.addData("In Loop Target Position:", mFrontLeft.getTargetPosition());
+            mTelemetry.addData("Current Position: ", mFrontLeft.getCurrentPosition());
+            mTelemetry.update();
         }
 
         mFrontLeft.setPower(0);

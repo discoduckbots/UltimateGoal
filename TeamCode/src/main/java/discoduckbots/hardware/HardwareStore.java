@@ -1,25 +1,28 @@
 package discoduckbots.hardware;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class HardwareStore {
-    MecanumDrivetrain mecanumDrivetrain;
-    Intake intake;
-    Shooter shooter;
-    WobbleMover wobbleMover;
+    private MecanumDrivetrain mecanumDrivetrain;
+    private Intake intake;
+    private Shooter shooter;
+    private WobbleMover wobbleMover;
+    private IMU imu;
+    private NormalizedColorSensor colorSensor = null;
 
     public HardwareStore(HardwareMap hardwareMap, Telemetry telemetry, LinearOpMode opMode) {
         DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
         DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        mecanumDrivetrain = new MecanumDrivetrain(telemetry, opMode,
-                frontLeft, frontRight, backLeft, backRight);
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
 
         DcMotor intakeMotor = hardwareMap.get(DcMotor.class, "intake");
         intake = new Intake(intakeMotor);
@@ -31,6 +34,13 @@ public class HardwareStore {
         DcMotor wobbleMoverMotor = hardwareMap.get(DcMotor.class, "wobbleMover");
         Servo wobbleGrabber = hardwareMap.get(Servo.class, "wobbleGrabber");
         wobbleMover = new WobbleMover(wobbleMoverMotor, wobbleGrabber);
+
+        BNO055IMU gyro = hardwareMap.get(BNO055IMU.class, "imu");
+        imu = new IMU(gyro);
+        imu.initialize();
+
+        mecanumDrivetrain = new MecanumDrivetrain(telemetry, opMode, imu, colorSensor, frontLeft, frontRight, backLeft, backRight);
+
     }
 
     public MecanumDrivetrain getMecanumDrivetrain() {
@@ -47,5 +57,13 @@ public class HardwareStore {
 
     public WobbleMover getWobbleMover() {
         return wobbleMover;
+    }
+
+    public IMU getImu(){
+        return imu;
+    }
+
+    public NormalizedColorSensor getColorSensor(){
+        return colorSensor;
     }
 }
