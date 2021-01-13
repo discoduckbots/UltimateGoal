@@ -9,8 +9,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class IMU {
 
-    BNO055IMU imu;
-    Orientation angles;
+    private static final double MAX_GYRO_ADJUSTMENT = 0.15;
+
+    private BNO055IMU imu;
+    private Orientation angles;
 
     public IMU(BNO055IMU imu) {
         this.imu = imu;
@@ -55,31 +57,83 @@ public class IMU {
         return values;
     }
 
-    public double headingAdjustment(double targetHeading){
-        double adjustment;
-        double currentHeading;
-        double degreesOff;
-        boolean goRight;
-
-        currentHeading = getIMUHeading();
-
-        goRight = targetHeading > currentHeading;
-        degreesOff = Math.abs(targetHeading - currentHeading);
-
-        if (degreesOff > 180) {
-            goRight = !goRight;
-            degreesOff = 360 - degreesOff;
+    private double getHeadingError(double targetHeading, double currentHeading){
+        if (targetHeading >= 180){
+            currentHeading = currentHeading + (360 - targetHeading);
+        }
+        else{
+            currentHeading = currentHeading - targetHeading;
         }
 
-        if (degreesOff < .3) {
-            adjustment = 0;
-        } else {
-            adjustment = (Math.pow((degreesOff + 2) / 5, 2) + 2) / 100;
+        targetHeading = 0;
+
+        if (currentHeading >= 180.0){
+            return 360 - currentHeading;
         }
 
-        if (goRight) {
-            adjustment = -adjustment;
+        return  targetHeading - currentHeading;
+    }
+
+    public double computeHeadingAdjustment(double targetHeading){
+
+        double currentHeading = getIMUHeading();
+        double headingError = getHeadingError(targetHeading, currentHeading);
+        boolean rotateLeft = headingError < 0;
+        double adjustment = 0.0;
+
+        headingError = Math.abs(headingError);
+
+        if (headingError < 0.3){
+            return 0.0;
         }
+
+        adjustment = (Math.pow((headingError + 2) / 5, 2) + 2)/ 100;
+        if (adjustment > MAX_GYRO_ADJUSTMENT){
+            adjustment = MAX_GYRO_ADJUSTMENT;
+        }
+
+        if (rotateLeft){
+            adjustment = adjustment * -1;
+        }
+
         return adjustment;
+    }
+
+    public double calculateTurnHeading(double rotationDegrees){
+        double resultHeading = getIMUHeading() + rotationDegrees;
+
+        if (resultHeading >= 360){
+            return resultHeading - 360;
+        }
+        else if (resultHeading < 0){
+            return resultHeading + 360;
+        }
+
+        return resultHeading;
+    }
+
+    public double getDistanceToTargetHeading(double targetHeading, boolean rotateLeft){
+        double currentHeading = getIMUHeading();
+
+        if(!rotateLeft){
+            if (currentHeading > 0){
+                targetHeading = targetHeading + (360 - currentHeading);
+                currentHeading = 0;
+            }
+
+            if (targetHeading - currentHeading >= 360){
+                return targetHeading - currentHeading - 360;
+            }
+
+            return targetHeading - currentHeading;
+        }
+
+
+        if (currentHeading - targetHeading < 0){
+            currentHeading = currentHeading + (360 - targetHeading);
+            targetHeading = 0;
+        }
+
+        return currentHeading - targetHeading;
     }
 }

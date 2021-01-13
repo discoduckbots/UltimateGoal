@@ -283,18 +283,31 @@ public class MecanumDrivetrain implements DrivetrainInterface {
                 break;
             }
 
-            //Negative Value is Go Right - Positive is Left
-            double adjustment = imu.headingAdjustment(targetHeading);
+            double gyroAdjustment = imu.computeHeadingAdjustment(targetHeading);
 
-            if (DIRECTION_FORWARD == direction || DIRECTION_REVERSE == direction) {
-                mFrontLeft.setPower(basePower + adjustment);
-                mBackLeft.setPower(basePower + adjustment);
-                mFrontRight.setPower(basePower - adjustment);
-                mBackRight.setPower(basePower - adjustment);
+            if (DIRECTION_FORWARD == direction) {
+                mFrontLeft.setPower(basePower + gyroAdjustment);
+                mBackLeft.setPower(basePower + gyroAdjustment);
+                mFrontRight.setPower(basePower - gyroAdjustment);
+                mBackRight.setPower(basePower - gyroAdjustment);
             }
-            else{
-                mBackLeft.setPower(basePower - adjustment);
-                mFrontRight.setPower(basePower + adjustment);
+            else if (DIRECTION_REVERSE == direction){
+                mFrontLeft.setPower(basePower - gyroAdjustment);
+                mBackLeft.setPower(basePower - gyroAdjustment);
+                mFrontRight.setPower(basePower + gyroAdjustment);
+                mBackRight.setPower(basePower + gyroAdjustment);
+            }
+            else if (DIRECTION_STRAFE_LEFT == direction){
+                mBackLeft.setPower(basePower + gyroAdjustment);
+                mBackRight.setPower(basePower + gyroAdjustment);
+                mFrontRight.setPower(basePower - gyroAdjustment);
+                mFrontLeft.setPower(basePower - gyroAdjustment);
+            }
+            else{ //Strafe Right
+                mBackLeft.setPower(basePower - gyroAdjustment);
+                mBackRight.setPower(basePower - gyroAdjustment);
+                mFrontRight.setPower(basePower + gyroAdjustment);
+                mFrontLeft.setPower(basePower + gyroAdjustment);
             }
         }
         stop();
@@ -328,48 +341,87 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         mBackLeft.setPower(basePower);
         mBackRight.setPower(basePower);
 
-
-        double currentPower = basePower;
-
         while (mFrontLeft.getTargetPosition() > mFrontLeft.getCurrentPosition() + tolerance){
+
+            double gyroAdjustment = imu.computeHeadingAdjustment(targetHeading);
+
             mTelemetry.addData("In Loop Target Position:", mFrontLeft.getTargetPosition());
             mTelemetry.addData("Current Position: ", mFrontLeft.getCurrentPosition());
+            mTelemetry.addData("Current Heading: ", imu.getIMUHeading());
+            mTelemetry.addData("Target Heading: ", targetHeading);
+            mTelemetry.addData("Gyro Adjustment: " , gyroAdjustment);
             mTelemetry.update();
 
-            //Negative Value is Go Right - Positive is Left
-            double adjustment = imu.headingAdjustment(targetHeading);
-
-            if (DIRECTION_FORWARD == direction || DIRECTION_REVERSE == direction) {
-                mFrontLeft.setPower(basePower + adjustment);
-                mBackLeft.setPower(basePower + adjustment);
-                mFrontRight.setPower(basePower - adjustment);
-                mBackRight.setPower(basePower - adjustment);
+            if (DIRECTION_FORWARD == direction) {
+                mFrontLeft.setPower(basePower + gyroAdjustment);
+                mBackLeft.setPower(basePower + gyroAdjustment);
+                mFrontRight.setPower(basePower - gyroAdjustment);
+                mBackRight.setPower(basePower - gyroAdjustment);
             }
-            else{
-                mBackLeft.setPower(basePower - adjustment);
-                mFrontRight.setPower(basePower + adjustment);
+            else if (DIRECTION_REVERSE == direction){
+                mFrontLeft.setPower(basePower - gyroAdjustment);
+                mBackLeft.setPower(basePower - gyroAdjustment);
+                mFrontRight.setPower(basePower + gyroAdjustment);
+                mBackRight.setPower(basePower + gyroAdjustment);
+            }
+            else if (DIRECTION_STRAFE_LEFT == direction){
+                mBackLeft.setPower(basePower + gyroAdjustment);
+                mBackRight.setPower(basePower + gyroAdjustment);
+                mFrontRight.setPower(basePower - gyroAdjustment);
+                mFrontLeft.setPower(basePower - gyroAdjustment);
+            }
+            else{ //Strafe Right
+                mBackLeft.setPower(basePower - gyroAdjustment);
+                mBackRight.setPower(basePower - gyroAdjustment);
+                mFrontRight.setPower(basePower + gyroAdjustment);
+                mFrontLeft.setPower(basePower + gyroAdjustment);
             }
         }
 
+        stop();
+    }
 
-//        while (revolutionsRemaining > tolerance && opMode.opModeIsActive()) {
-//
-//            //Negative Value is Go Right - Positive is Left
-//            double adjustment = imu.headingAdjustment(targetHeading);
-//
-//            if (DIRECTION_FORWARD == direction || DIRECTION_REVERSE == direction) {
-//                mFrontLeft.setPower(basePower + adjustment);
-//                mBackLeft.setPower(basePower + adjustment);
-//                mFrontRight.setPower(basePower - adjustment);
-//                mBackRight.setPower(basePower - adjustment);
-//            }
-//            else{
-//                mBackLeft.setPower(basePower - adjustment);
-//                mFrontRight.setPower(basePower + adjustment);
-//            }
-//
-//            revolutionsRemaining = mFrontLeft.getTargetPosition() - mFrontLeft.getCurrentPosition();
-//        }
+    public void gyroTurn(double degrees, double basePower) {
+        double targetHeading = imu.calculateTurnHeading(degrees);
+        boolean rotateLeft = degrees < 0;
+        double distanceToTarget = Math.abs(degrees);
+        double previousDistanceToTarget = 999;
+
+        while (distanceToTarget > 1 && opMode.opModeIsActive()){
+            distanceToTarget = imu.getDistanceToTargetHeading(targetHeading, rotateLeft);
+
+            if (previousDistanceToTarget < distanceToTarget){
+                break;
+            }
+            previousDistanceToTarget = distanceToTarget;
+
+            /* Slow down when getting closer to target */
+            double adjustedPower = basePower;
+            if (distanceToTarget < 20){
+                adjustedPower = basePower * .25;
+            }
+            else if (distanceToTarget < 10){
+                adjustedPower = basePower * .15;
+            }
+
+            if (rotateLeft){
+                adjustedPower *= -1;
+            }
+
+            mTelemetry.addData("In Loop Gyro Turn:", " " );
+            mTelemetry.addData("Current Heading: ", imu.getIMUHeading());
+            mTelemetry.addData("Target Heading: ", targetHeading);
+            mTelemetry.addData("Turn Left: " , rotateLeft);
+            mTelemetry.addData("Previous Distance To Target: " , previousDistanceToTarget);
+            mTelemetry.addData("Distance To Target: " , distanceToTarget);
+            mTelemetry.addData("Adjusted Power: " , adjustedPower);
+            mTelemetry.update();
+
+            mFrontLeft.setPower(adjustedPower);
+            mBackLeft.setPower(adjustedPower);
+            mFrontRight.setPower(-adjustedPower);
+            mBackRight.setPower(-adjustedPower);
+        }
 
         stop();
     }
@@ -397,7 +449,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
 
         ElapsedTime timeoutTimer = new ElapsedTime();
         //Negative Value is Go Right - Positive is Left
-        double adjustment = imu.headingAdjustment(targetHeading);
+        double adjustment = imu.computeHeadingAdjustment(targetHeading);
         while (adjustment != 0 && opMode.opModeIsActive() && timeoutTimer.seconds() < 0.75) {
             telemetry.addData("IMU adjustment: " , " " + startHeading + " " + adjustment);
             telemetry.update();
@@ -413,7 +465,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
             }
 
             //Negative Value is Go Right - Positive is Left
-            adjustment = imu.headingAdjustment(targetHeading);
+            adjustment = imu.computeHeadingAdjustment(targetHeading);
 
         }
 

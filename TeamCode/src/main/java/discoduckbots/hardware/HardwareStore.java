@@ -32,7 +32,7 @@ public class HardwareStore {
         shooter = new Shooter(shooterMotor, pusherServo);
 
         DcMotor wobbleMoverMotor = hardwareMap.get(DcMotor.class, "wobbleMover");
-        Servo wobbleGrabber = hardwareMap.get(Servo.class, "wobbleGrabber");
+        Servo wobbleGrabber = null; //hardwareMap.get(Servo.class, "wobbleGrabber");
         wobbleMover = new WobbleMover(wobbleMoverMotor, wobbleGrabber);
 
         BNO055IMU gyro = hardwareMap.get(BNO055IMU.class, "imu");
