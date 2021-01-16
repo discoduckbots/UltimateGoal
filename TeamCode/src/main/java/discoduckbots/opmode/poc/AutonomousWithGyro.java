@@ -25,7 +25,7 @@ public class AutonomousWithGyro extends LinearOpMode {
         wobbleMover = hardwareStore.getWobbleMover();
         shooter = hardwareStore.getShooter();
 
-        double autonomousSpeed = 0.6;
+        double autonomousSpeed = 0.4;
 
         // wait for start
         waitForStart();
@@ -33,12 +33,15 @@ public class AutonomousWithGyro extends LinearOpMode {
 
         wobbleMover.grab();
         mecanumDrivetrain.driveByGyro(6, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed,0);
-//        mecanumDrivetrain.driveWithColorSensor(MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, 0);
+        sleep(500);
         mecanumDrivetrain.driveByGyro(22, MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, 0);
+        sleep(500);
         wobbleMover.drop(this);
-        mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed, 0);
-        mecanumDrivetrain.turnLeft(this, 190);
-        mecanumDrivetrain.driveByGyro(10, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, 90);
+        mecanumDrivetrain.gyroTurn(-90, autonomousSpeed);
+        sleep(500);
+        mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, 270);
+        sleep(500);
+        mecanumDrivetrain.driveByGyro(10, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, 270);
         shooter.shoot();
 
         sleep(1000);
@@ -51,7 +54,7 @@ public class AutonomousWithGyro extends LinearOpMode {
         }
 
         mecanumDrivetrain.stop();
-        mecanumDrivetrain.driveByGyro(1, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, 90);
+        mecanumDrivetrain.driveByGyro(1, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, 270);
         mecanumDrivetrain.stop();
     }
 }

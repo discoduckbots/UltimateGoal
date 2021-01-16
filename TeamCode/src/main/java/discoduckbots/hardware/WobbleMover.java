@@ -37,10 +37,10 @@ public class WobbleMover {
     }
 
     public void grab() {
-        wobbleGrabber.setPosition(0);
+        wobbleGrabber.setPosition(0.75);
     }
 
     public void release() {
-        wobbleGrabber.setPosition(0.75);
+        wobbleGrabber.setPosition(0);
     }
 }
