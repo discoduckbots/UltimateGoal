@@ -24,6 +24,10 @@ public class Shooter {
         startMotor();
     }
 
+    public void shoot(double speed){
+        shooterMotor.setPower(speed);
+    }
+
     private void startMotor(){
         shooterMotor.setPower(MOTOR_POWER);
     }

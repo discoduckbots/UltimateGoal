@@ -47,16 +47,16 @@ public class TestTeleop extends LinearOpMode {
             }
 
             if (gamepad2.x) {
-                mecanumDrivetrain.gyroTurn(-45, testSpeed);
+                mecanumDrivetrain.gyroTurn(-45, testSpeed, this);
             }
             else if (gamepad2.y){
-                mecanumDrivetrain.gyroTurn(-90, testSpeed);
+                mecanumDrivetrain.gyroTurn(-90, testSpeed, this);
             }
             else if (gamepad2.a) {
-                mecanumDrivetrain.gyroTurn(45, testSpeed);
+                mecanumDrivetrain.gyroTurn(45, testSpeed, this);
             }
             else if (gamepad2.b){
-                mecanumDrivetrain.gyroTurn(90, testSpeed);
+                mecanumDrivetrain.gyroTurn(90, testSpeed, this);
             }
 
             idle();

@@ -90,13 +90,13 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
                 intake.stop();
             }
 
-            if (gamepad1.right_trigger > 0){
+            if (gamepad2.right_trigger > 0){
                 shooter.shoot();
             }
 
-            if (gamepad1.x){
+            if (gamepad2.x){
                 shooter.pushRing();
-            }else if (gamepad1.y){
+            }else if (gamepad2.y){
                 shooter.resetPusher();
             }
 

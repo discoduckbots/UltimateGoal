@@ -381,16 +381,29 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         stop();
     }
 
-    public void gyroTurn(double degrees, double basePower) {
-        double targetHeading = imu.calculateTurnHeading(degrees);
+    public void gyroTurn(double degrees, double basePower, LinearOpMode opMode) {
+        setMotorDirection(DIRECTION_FORWARD);
+        double targetHeading = imu.calculateTurnHeading(degrees); // this returns the current heading + degrees
         boolean rotateLeft = degrees < 0;
         double distanceToTarget = Math.abs(degrees);
         double previousDistanceToTarget = 999;
 
+        mTelemetry.addData("Start Gyro Turn:", " " );
+        mTelemetry.addData("Current Heading: ", imu.getIMUHeading());
+        mTelemetry.addData("Target Heading: ", targetHeading);
+        mTelemetry.addData("Turn Left: " , rotateLeft);
+        mTelemetry.addData("Previous Distance To Target: " , previousDistanceToTarget);
+        mTelemetry.addData("Distance To Target: " , distanceToTarget);
+        mTelemetry.addData("Rotate Left: " , rotateLeft);
+        mTelemetry.update();
+
+        //opMode.sleep(2000);
+
         while (distanceToTarget > 1 && opMode.opModeIsActive()){
+            mTelemetry.addData("In Loop ", distanceToTarget);
             distanceToTarget = imu.getDistanceToTargetHeading(targetHeading, rotateLeft);
 
-            if (previousDistanceToTarget < distanceToTarget){
+            if ((previousDistanceToTarget + 2) < (distanceToTarget )){
                 break;
             }
             previousDistanceToTarget = distanceToTarget;
@@ -424,6 +437,14 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         }
 
         stop();
+        mTelemetry.addData("After Loop Gyro Turn:", " " );
+        mTelemetry.addData("Current Heading: ", imu.getIMUHeading());
+        mTelemetry.addData("Target Heading: ", targetHeading);
+        mTelemetry.addData("Turn Left: " , rotateLeft);
+        mTelemetry.addData("Previous Distance To Target: " , previousDistanceToTarget);
+        mTelemetry.addData("Distance To Target: " , distanceToTarget);
+        mTelemetry.update();
+        //opMode.sleep(2);
     }
 
     public void turnLeftGyro(double basePower, IMU imu, double targetHeading,
