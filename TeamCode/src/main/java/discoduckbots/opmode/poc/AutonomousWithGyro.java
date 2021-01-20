@@ -37,16 +37,11 @@ public class AutonomousWithGyro extends LinearOpMode {
         mecanumDrivetrain.driveByGyro(20, MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, 0);
         sleep(500);
         wobbleMover.drop(this);
-        mecanumDrivetrain.driveByGyro(12, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed,0);
-        //mecanumDrivetrain.driveByGyro(1, MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, 270);
+        mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed,0);
 
-        //mecanumDrivetrain.gyroTurn(-56, autonomousSpeed, this);
-        mecanumDrivetrain.gyroTurn(-59, 0.6, this);
+        mecanumDrivetrain.gyroTurn(-80, 0.4, this);
         sleep(500);
-        //mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, 270);
-        //sleep(500);
-        //mecanumDrivetrain.driveByGyro(10, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, 270);
-        shooter.shoot(0.5);
+        shooter.shoot(0.6);
 
         sleep(1000);
 
