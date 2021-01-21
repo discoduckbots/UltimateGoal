@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.vuforia.SmartTerrain;
 
 import discoduckbots.hardware.HardwareStore;
 import discoduckbots.hardware.Intake;
@@ -66,9 +67,15 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
     private Shooter shooter = null;
     private WobbleMover wobbleMover = null;
 
+    private static final double HIGH_GOAL_SHOOTER_POWER = 0.55;
+    private static final double POWER_SHOT_SHOOTER_POWER = 0.45;
 
     @Override
     public void runOpMode() {
+        runTeleOp(HIGH_GOAL_SHOOTER_POWER, POWER_SHOT_SHOOTER_POWER);
+    }
+
+    protected void runTeleOp(double highGoalShooterPower, double powerShotShooterPower){
         HardwareStore hardwareStore = new HardwareStore(hardwareMap, telemetry, this);
         mecanumDrivetrain = hardwareStore.getMecanumDrivetrain();
         intake = hardwareStore.getIntake();
@@ -93,10 +100,10 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
 
             /* Gamepad 2 */
             if (gamepad2.right_trigger > 0){
-                shooter.shoot(0.6);
+                shooter.shoot(HIGH_GOAL_SHOOTER_POWER);
             }
             else if (gamepad2.left_trigger > 0){
-                shooter.shoot(0.5);
+                shooter.shoot(POWER_SHOT_SHOOTER_POWER);
             }
 
             if (gamepad2.x){
@@ -107,23 +114,22 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
 
 
             if (gamepad2.dpad_down || gamepad2.a){
-               wobbleMover.lower(1);
-           }
-           else if (gamepad2.dpad_up || gamepad2.b){
-              wobbleMover.lift(1);
-           }
+                wobbleMover.lower(1);
+            }
+            else if (gamepad2.dpad_up || gamepad2.b){
+                wobbleMover.lift(1);
+            }
             else{
-              wobbleMover.stop();
-           }
+                wobbleMover.stop();
+            }
 
-           if (gamepad2.left_bumper){
+            if (gamepad2.left_bumper){
                 wobbleMover.grab();
             }
             if (gamepad2.right_bumper){
                 wobbleMover.release();
-           }
+            }
         }
-
 
         telemetry.addData("MecanumDrivetrainTeleOp", "Stopping");
 
@@ -135,5 +141,4 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
         intake.stop();
         shooter.stop();
     }
-
 }

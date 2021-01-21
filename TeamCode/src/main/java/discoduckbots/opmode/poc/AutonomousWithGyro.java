@@ -17,15 +17,21 @@ public class AutonomousWithGyro extends LinearOpMode {
     private WobbleMover wobbleMover = null;
     private Shooter shooter = null;
 
+    private static final double AUTONOMOUS_SPEED = 0.65;
+    private static final double ROTATION_SPEED = 0.4;
+    private static final double HIGH_GOAL_SHOOT_POWER = 0.55;
+
     @Override
     public void runOpMode() throws InterruptedException {
+        runAutonomous(AUTONOMOUS_SPEED, ROTATION_SPEED, HIGH_GOAL_SHOOT_POWER);
+    }
+
+    protected void runAutonomous(double autonomousSpeed, double rotationSpeed, double highGoalShootPower){
         // initialize hardware
         HardwareStore hardwareStore = new HardwareStore(hardwareMap, telemetry, this);
         mecanumDrivetrain = hardwareStore.getMecanumDrivetrain();
         wobbleMover = hardwareStore.getWobbleMover();
         shooter = hardwareStore.getShooter();
-
-        double autonomousSpeed = 0.65;
 
         // wait for start
         waitForStart();
@@ -37,11 +43,11 @@ public class AutonomousWithGyro extends LinearOpMode {
         mecanumDrivetrain.driveByGyro(20, MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, 0);
         sleep(500);
         wobbleMover.drop(this);
-        mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed,0);
+        mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed,0);
 
-        mecanumDrivetrain.gyroTurn(-80, 0.4, this);
+        mecanumDrivetrain.gyroTurn(-80, rotationSpeed, this);
         sleep(500);
-        shooter.shoot(0.6);
+        shooter.shoot(highGoalShootPower);
 
         sleep(1000);
 
