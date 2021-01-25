@@ -67,8 +67,8 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
     private Shooter shooter = null;
     private WobbleMover wobbleMover = null;
 
-    private static final double HIGH_GOAL_SHOOTER_POWER = 0.55;
-    private static final double POWER_SHOT_SHOOTER_POWER = 0.45;
+    private static final double HIGH_GOAL_SHOOTER_POWER = 0.6;
+    private static final double POWER_SHOT_SHOOTER_POWER = 0.5;
 
     @Override
     public void runOpMode() {
