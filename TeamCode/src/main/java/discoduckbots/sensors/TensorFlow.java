@@ -32,19 +32,23 @@ public class TensorFlow {
         mHardwareMap = hardwareMap;
         initVuforia(telemetry);
 
-       // if (!ClassFactory.getInstance().canCreateTFObjectDetector()) {
-         //   telemetry.addData("Sorry!", "This device is not compatible with TFOD");
-        //}//
+      // if (!ClassFactory.getInstance().c()) {
+        // telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+        //}
 
         int tfodMonitorViewId = mHardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", mHardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minimumConfidence = 0.8;
+
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
 
         if (tfod != null) {
+            telemetry.addData("TDOD is not null", "");
+            telemetry.update();
             tfod.activate();
+            tfod.setZoom(2.5, 1.78);
         }else {
             telemetry.addData("TDOD is null", "");
             telemetry.update();

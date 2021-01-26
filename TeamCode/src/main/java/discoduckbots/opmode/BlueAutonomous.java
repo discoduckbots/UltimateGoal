@@ -8,6 +8,7 @@ import discoduckbots.hardware.Intake;
 import discoduckbots.hardware.MecanumDrivetrain;
 import discoduckbots.hardware.Shooter;
 import discoduckbots.hardware.WobbleMover;
+import discoduckbots.sensors.TensorFlow;
 
 import static discoduckbots.measurements.Measurements.DISTANCE_TO_LAUNCH_LINE;
 
@@ -19,6 +20,8 @@ public class BlueAutonomous extends LinearOpMode {
     private MecanumDrivetrain mecanumDrivetrain = null;
     private WobbleMover wobbleMover = null;
     private Shooter shooter = null;
+    TensorFlow tensorFlow = null;
+    RingStackDetector ringStackDetector = null;
     @Override
     public void runOpMode() throws InterruptedException {
         // initialize hardware
@@ -26,6 +29,11 @@ public class BlueAutonomous extends LinearOpMode {
         mecanumDrivetrain = hardwareStore.getMecanumDrivetrain();
         shooter = hardwareStore.getShooter();
         wobbleMover = hardwareStore.getWobbleMover();
+
+        tensorFlow = new TensorFlow();
+        ringStackDetector = new RingStackDetector();
+        tensorFlow.initTensorflow(telemetry, hardwareMap);
+
         // wait for start
         waitForStart();
         runtime.reset();
@@ -42,12 +50,13 @@ public class BlueAutonomous extends LinearOpMode {
         if (tensorFlowDetection) {
             int distanceToMoveBack = 0;
 
+            telemetry.addData("init tensor flow", "");
+            telemetry.update();
 
-           // TensorFlow tensorFlow = new TensorFlow();
-            // RingStackDetector ringStackDetector = new RingStackDetector();
-            // tensorFlow.initTensorflow(telemetry, hardwareMap);
-          //  int number = ringStackDetector.getSlot(tensorFlow.detect());
-            int number = 0;
+            int number = ringStackDetector.getSlot(tensorFlow.detect(), telemetry);
+        }
+          /*
+            //int number = 0;
             if (number == 0){
                 distanceToMoveBack = 0;
                 distanceToStrafe = 13;
@@ -98,6 +107,8 @@ public class BlueAutonomous extends LinearOpMode {
         mecanumDrivetrain.stop();
         mecanumDrivetrain.driveByDistanceWithTolerance(1, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed);
         mecanumDrivetrain.stop();
+        */
+
     }
 
     private void shoot() {
