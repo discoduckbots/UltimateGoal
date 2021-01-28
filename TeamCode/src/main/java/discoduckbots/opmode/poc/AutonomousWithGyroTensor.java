@@ -23,7 +23,7 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
 
     private static final double AUTONOMOUS_SPEED = 0.65;
     private static final double ROTATION_SPEED = 0.4;
-    private static final double HIGH_GOAL_SHOOT_POWER = 0.55;
+    private static final double HIGH_GOAL_SHOOT_POWER = 0.65;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -52,8 +52,8 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
             distanceForward = 20;
             distanceBack = 0;
         } else if (number == 1) {
-            distanceBack = 11;
-            distanceForward = 29;
+            distanceBack = 13;
+            distanceForward = 24;
         } else {
             distanceBack = 24;
             distanceForward = 42;
@@ -65,12 +65,12 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
         sleep(500);
 
         if (number == 1) {
-            mecanumDrivetrain.driveByGyro(16, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed,0);
+            mecanumDrivetrain.driveByGyro(11, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed,0);
             wobbleMover.drop(this);
 
         } else {
             wobbleMover.drop(this);
-            mecanumDrivetrain.driveByGyro(16, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed,0);
+            mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed,0);
             sleep(500);
         }
 
