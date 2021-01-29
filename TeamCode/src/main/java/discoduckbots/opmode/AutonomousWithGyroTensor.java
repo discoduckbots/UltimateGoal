@@ -1,4 +1,4 @@
-package discoduckbots.opmode.poc;
+package discoduckbots.opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -23,14 +23,9 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
 
     private static final double AUTONOMOUS_SPEED = 0.65;
     private static final double ROTATION_SPEED = 0.4;
-    private static final double HIGH_GOAL_SHOOT_POWER = 0.65;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        runAutonomous(AUTONOMOUS_SPEED, ROTATION_SPEED, HIGH_GOAL_SHOOT_POWER);
-    }
-
-    protected void runAutonomous(double autonomousSpeed, double rotationSpeed, double highGoalShootPower){
         // initialize hardware
         HardwareStore hardwareStore = new HardwareStore(hardwareMap, telemetry, this);
         mecanumDrivetrain = hardwareStore.getMecanumDrivetrain();
@@ -59,18 +54,18 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
             distanceForward = 42;
         }
         wobbleMover.grab();
-        mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed,0);
+        mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
         sleep(500);
-        mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, autonomousSpeed, 0);
+        mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
         sleep(500);
 
         if (number == 1) {
-            mecanumDrivetrain.driveByGyro(11, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed,0);
+            mecanumDrivetrain.driveByGyro(11, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
             wobbleMover.drop(this);
 
         } else {
             wobbleMover.drop(this);
-            mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, autonomousSpeed,0);
+            mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
             sleep(500);
         }
 
@@ -79,9 +74,9 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
             sleep(500);
         }
 
-        mecanumDrivetrain.gyroTurn(-80, rotationSpeed, this);
+        mecanumDrivetrain.gyroTurn(-80, ROTATION_SPEED, this);
         sleep(500);
-        shooter.shoot(highGoalShootPower);
+        shooter.setPowerForHighGoal();
 
         sleep(1000);
 
@@ -93,7 +88,7 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
         }
 
         mecanumDrivetrain.stop();
-        mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, autonomousSpeed, 270);
+        mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 270);
         mecanumDrivetrain.stop();
     }
 }

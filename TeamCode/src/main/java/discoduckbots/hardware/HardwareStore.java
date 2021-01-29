@@ -3,6 +3,7 @@ package discoduckbots.hardware;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -27,7 +28,7 @@ public class HardwareStore {
         DcMotor intakeMotor = hardwareMap.get(DcMotor.class, "intake");
         intake = new Intake(intakeMotor);
 
-        DcMotor shooterMotor = hardwareMap.get(DcMotor.class, "shooter");
+        DcMotorEx shooterMotor = hardwareMap.get(DcMotorEx.class, "shooter");
         Servo pusherServo = hardwareMap.get(Servo.class, "pusher");
         shooter = new Shooter(shooterMotor, pusherServo);
 

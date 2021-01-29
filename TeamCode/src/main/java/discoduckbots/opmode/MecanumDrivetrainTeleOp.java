@@ -67,15 +67,8 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
     private Shooter shooter = null;
     private WobbleMover wobbleMover = null;
 
-    private static final double HIGH_GOAL_SHOOTER_POWER = 0.6;
-    private static final double POWER_SHOT_SHOOTER_POWER = 0.5;
-
     @Override
     public void runOpMode() {
-        runTeleOp(HIGH_GOAL_SHOOTER_POWER, POWER_SHOT_SHOOTER_POWER);
-    }
-
-    protected void runTeleOp(double highGoalShooterPower, double powerShotShooterPower){
         HardwareStore hardwareStore = new HardwareStore(hardwareMap, telemetry, this);
         mecanumDrivetrain = hardwareStore.getMecanumDrivetrain();
         intake = hardwareStore.getIntake();
@@ -97,13 +90,12 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
                 intake.stop();
             }
 
-
             /* Gamepad 2 */
             if (gamepad2.right_trigger > 0){
-                shooter.shoot(HIGH_GOAL_SHOOTER_POWER);
+                shooter.setPowerForHighGoal();
             }
             else if (gamepad2.left_trigger > 0){
-                shooter.shoot(POWER_SHOT_SHOOTER_POWER);
+                shooter.setPowerForPowerShot();
             }
 
             if (gamepad2.x){
@@ -111,7 +103,6 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             }else if (gamepad2.y){
                 shooter.resetPusher();
             }
-
 
             if (gamepad2.dpad_down || gamepad2.a){
                 wobbleMover.lower(1);

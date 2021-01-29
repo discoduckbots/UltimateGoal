@@ -1,38 +1,41 @@
 package discoduckbots.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Shooter {
 
-    private static final double MOTOR_POWER = 0.6;
-    private static final double PUSHER_POWER = 1.0;
-    private static final double PUSHER_TIME = 0.1;
+    private final DcMotorEx shooterMotor;
+    private final Servo pusherServo;
 
-    private DcMotor shooterMotor;
-    private Servo pusherServo;
+    private static final double MAX_ROTATIONS_PER_SECOND = 100;
+    private static final double ENCODER_CYCLES_PER_ROTATION = 28;
 
-    public Shooter(DcMotor shooterMotor, Servo pusherServo) {
+    private static final double HIGH_GOAL_POWER = 0.8;
+    private static final double POWER_SHOT_POWER = 0.7;
+
+    public Shooter(DcMotorEx shooterMotor, Servo pusherServo) {
         this.shooterMotor = shooterMotor;
         this.pusherServo = pusherServo;
 
-        shooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        shooterMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    public void shoot() {
-        startMotor();
+    private double getVelocity(double power) {
+        return MAX_ROTATIONS_PER_SECOND * ENCODER_CYCLES_PER_ROTATION * power;
     }
 
-    public void shoot(double speed){
-        shooterMotor.setPower(speed);
+    public void setPowerForHighGoal(){
+        shooterMotor.setVelocity(getVelocity(HIGH_GOAL_POWER));
     }
 
-    private void startMotor(){
-        shooterMotor.setPower(MOTOR_POWER);
+    public void setPowerForPowerShot(){
+        shooterMotor.setVelocity(getVelocity(POWER_SHOT_POWER));
     }
 
-    // switch to fixed rotation 110 degree
     public void pushRing(){
         pusherServo.setPosition(0.55);
     }
@@ -42,6 +45,6 @@ public class Shooter {
     }
 
     public void stop(){
-        shooterMotor.setPower(0.0);
+        shooterMotor.setVelocity(0);
     }
 }
