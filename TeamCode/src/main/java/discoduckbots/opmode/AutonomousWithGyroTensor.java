@@ -44,11 +44,11 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
         int distanceForward;
         int distanceBack;
         if (number == 0) {
-            distanceForward = 20;
+            distanceForward = 19;
             distanceBack = 0;
         } else if (number == 1) {
-            distanceBack = 13;
-            distanceForward = 24;
+            distanceBack = 10;
+            distanceForward = 26;
         } else {
             distanceBack = 24;
             distanceForward = 42;
@@ -60,12 +60,12 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
         sleep(500);
 
         if (number == 1) {
-            mecanumDrivetrain.driveByGyro(11, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
+            mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
             wobbleMover.drop(this);
 
         } else {
             wobbleMover.drop(this);
-            mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
+            mecanumDrivetrain.driveByGyro(15, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
             sleep(500);
         }
 

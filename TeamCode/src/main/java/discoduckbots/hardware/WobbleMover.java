@@ -41,6 +41,6 @@ public class WobbleMover {
     }
 
     public void release() {
-        wobbleGrabber.setPosition(0.75);
+        wobbleGrabber.setPosition(0.5);
     }
 }

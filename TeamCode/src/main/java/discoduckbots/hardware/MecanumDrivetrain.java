@@ -1,12 +1,14 @@
 package discoduckbots.hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import discoduckbots.control.PIDF;
 import discoduckbots.util.NumberUtility;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -27,6 +29,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
     private LinearOpMode opMode;
     private IMU imu;
     private NormalizedColorSensor colorSensor;
+    private PIDF headingPID;
 
 
     /**
@@ -79,6 +82,17 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         mBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mFrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mFrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        headingPID = new PIDF(0.95, 0, 0.01, 0);
+        headingPID.setPhase(false);
+        headingPID.setPeakOutputForward(1);
+        headingPID.setPeakOutputReverse(-1);
+        headingPID.setContinuityRange(-Math.PI, Math.PI);
+        headingPID.setContinuous(true);
+        headingPID.setAtTargetThreshold(Math.toRadians(3));
+
+
+
     }
 
     private void setMotorDirection(int direction){
@@ -379,6 +393,22 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         }
 
         stop();
+    }
+
+    public void turnToHeading(LinearOpMode opMode, double heading, Runnable whileWaiting){
+        headingPID.setSetpoint(heading);
+        while (!opMode.isStopRequested()){
+            if (whileWaiting != null){
+                whileWaiting.run();
+            }
+
+            if (Math.abs(headingPID.getLastError()) < Math.toRadians(6)){
+                break;
+            }
+
+            //Code that Turns Use this to adjust power
+            //headingPID.update(imu.getIMUHeading());
+        }
     }
 
     public void gyroTurn(double degrees, double basePower, LinearOpMode opMode) {
