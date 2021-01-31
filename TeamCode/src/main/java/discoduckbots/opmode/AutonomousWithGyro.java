@@ -17,7 +17,7 @@ public class AutonomousWithGyro extends LinearOpMode {
     private WobbleMover wobbleMover = null;
     private Shooter shooter = null;
 
-    private static final double AUTONOMOUS_SPEED = 0.65;
+    private static final double AUTONOMOUS_SPEED = 0.7;
     private static final double ROTATION_SPEED = 0.4;
 
     @Override

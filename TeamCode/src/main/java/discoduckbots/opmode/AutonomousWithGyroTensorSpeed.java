@@ -1,6 +1,5 @@
 package discoduckbots.opmode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -8,11 +7,10 @@ import discoduckbots.hardware.HardwareStore;
 import discoduckbots.hardware.MecanumDrivetrain;
 import discoduckbots.hardware.Shooter;
 import discoduckbots.hardware.WobbleMover;
-import discoduckbots.opmode.RingStackDetector;
 import discoduckbots.sensors.TensorFlow;
-@Disabled
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="TfGyro Autonomous", group="Linear Opmode")
-public class AutonomousWithGyroTensor extends LinearOpMode {
+
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="TfSGyro Autonomous", group="Linear Opmode")
+public class AutonomousWithGyroTensorSpeed extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private MecanumDrivetrain mecanumDrivetrain = null;
@@ -63,29 +61,51 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
         if (number == 1) {
             mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
             wobbleMover.drop(this);
+            sleep(500);
 
         } else {
             wobbleMover.drop(this);
-            mecanumDrivetrain.driveByGyro(15, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
             sleep(500);
+            mecanumDrivetrain.driveByGyro(16, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
         }
-
+        shooter.setPowerForHighGoal();
         if (distanceBack > 0 ) {
             mecanumDrivetrain.driveByGyro(distanceBack, MecanumDrivetrain.DIRECTION_FORWARD, 0.5, 0);
             sleep(500);
         }
 
-        mecanumDrivetrain.gyroTurn(-80, ROTATION_SPEED, this);
-        sleep(500);
-        shooter.setPowerForHighGoal();
 
-        sleep(1000);
+        mecanumDrivetrain.gyroTurn(-80, ROTATION_SPEED, this);
+      //  sleep(500);
+
 
         for (int i = 0; i<4; i++){
-            sleep(1500);
             shooter.pushRing();
-            sleep(1500);
+            sleep(500);
             shooter.resetPusher();
+            sleep(500);
+        }
+        // move to the left to align with the second wobble goal
+        mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+        // turn to go back to pick up wobble goal two.
+        mecanumDrivetrain.gyroTurn(-80, ROTATION_SPEED, this);
+        mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+        sleep(100);
+        // pick up second wobble goal
+        wobbleMover.grab();
+
+        if (number == 0) {
+            mecanumDrivetrain.driveByGyro(19, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED, 0);
+           // mecanumDrivetrain.driveByGyro(16, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED, 0);
+            //wobbleMover.release();
+        } else if (number == 1) {
+            mecanumDrivetrain.driveByGyro(26, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED, 0);
+            //wobbleMover.release();
+        } else  {
+            mecanumDrivetrain.driveByGyro(19, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED, 0);
+            //mecanumDrivetrain.driveByGyro(16, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED, 0);
+            //mecanumDrivetrain.gyroTurn(180, ROTATION_SPEED, this);
+            //wobbleMover.release();
         }
 
         mecanumDrivetrain.stop();

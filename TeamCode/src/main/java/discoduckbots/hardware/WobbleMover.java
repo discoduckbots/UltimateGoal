@@ -15,7 +15,7 @@ public class WobbleMover {
         this.wobbleGrabber = wobbleGrabber;
     }
 
-    public void drop(LinearOpMode opmode) {
+    public void dropLift(LinearOpMode opmode) {
         wobbleMoverMotor.setPower(-1.0);
         opmode.sleep(2000);
         wobbleMoverMotor.setPower(0);
@@ -23,6 +23,13 @@ public class WobbleMover {
         wobbleMoverMotor.setPower(1.0);
         opmode.sleep(1000);
         wobbleMoverMotor.setPower(0);
+    }
+
+    public void drop(LinearOpMode opmode) {
+        wobbleMoverMotor.setPower(-1.0);
+        opmode.sleep(2000);
+        wobbleMoverMotor.setPower(0);
+        release();
     }
     public void lower(double speed) {
         wobbleMoverMotor.setPower(-1 * speed);
