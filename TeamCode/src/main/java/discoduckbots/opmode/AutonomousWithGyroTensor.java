@@ -44,8 +44,8 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
         int distanceForward;
         int distanceBack;
         if (number == 0) {
-            distanceForward = 19;
-            distanceBack = 0;
+            distanceForward = 3;
+            distanceBack = 19;
         } else if (number == 1) {
             distanceBack = 10;
             distanceForward = 26;
@@ -54,15 +54,40 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
             distanceForward = 42;
         }
         wobbleMover.grab();
-        mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
+        shooter.setPowerForHighGoal();
         sleep(500);
-        mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
-        sleep(500);
+        mecanumDrivetrain.driveByGyro(19,MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+        sleep(1000);
+
+        for (int i = 0; i<4; i++){
+            sleep(1000);
+            shooter.pushRing();
+            sleep(1000);
+            shooter.resetPusher();
+        }
 
         if (number == 1) {
-            mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
+            mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
+            sleep(500);
+            mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            sleep(250);
             wobbleMover.drop(this);
-
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(distanceBack, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED,0);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            wobbleMover.grab();
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(15, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            wobbleMover.release();
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(3, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
         } else {
             wobbleMover.drop(this);
             mecanumDrivetrain.driveByGyro(15, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
