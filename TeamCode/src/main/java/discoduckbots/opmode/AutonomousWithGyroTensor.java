@@ -1,6 +1,5 @@
 package discoduckbots.opmode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -10,7 +9,7 @@ import discoduckbots.hardware.Shooter;
 import discoduckbots.hardware.WobbleMover;
 import discoduckbots.opmode.RingStackDetector;
 import discoduckbots.sensors.TensorFlow;
-@Disabled
+
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="TfGyro Autonomous", group="Linear Opmode")
 public class AutonomousWithGyroTensor extends LinearOpMode {
 
