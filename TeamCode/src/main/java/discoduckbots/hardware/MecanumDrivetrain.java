@@ -364,6 +364,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
             mTelemetry.addData("Current Heading: ", imu.getIMUHeading());
             mTelemetry.addData("Target Heading: ", targetHeading);
             mTelemetry.addData("Gyro Adjustment: " , gyroAdjustment);
+            mTelemetry.addData("basePower: " , basePower);
             mTelemetry.update();
 
             if (DIRECTION_FORWARD == direction) {

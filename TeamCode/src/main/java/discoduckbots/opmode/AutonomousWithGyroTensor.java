@@ -1,6 +1,5 @@
 package discoduckbots.opmode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -10,7 +9,7 @@ import discoduckbots.hardware.Shooter;
 import discoduckbots.hardware.WobbleMover;
 import discoduckbots.opmode.RingStackDetector;
 import discoduckbots.sensors.TensorFlow;
-@Disabled
+
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="TfGyro Autonomous", group="Linear Opmode")
 public class AutonomousWithGyroTensor extends LinearOpMode {
 
@@ -23,6 +22,7 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
     RingStackDetector ringStackDetector = null;
 
     private static final double AUTONOMOUS_SPEED = 0.65;
+    private static final double STRAFE_SPEED = 0.5;
     private static final double ROTATION_SPEED = 0.4;
 
     @Override
@@ -45,51 +45,95 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
         int distanceForward;
         int distanceBack;
         if (number == 0) {
-            distanceForward = 19;
-            distanceBack = 0;
+            distanceForward = 3;
+            distanceBack = 19;
         } else if (number == 1) {
-            distanceBack = 10;
-            distanceForward = 26;
+            distanceBack = 26;
+            distanceForward = 5;
         } else {
-            distanceBack = 24;
-            distanceForward = 42;
+            distanceBack = 37;
+            distanceForward = 10;
         }
-        wobbleMover.grab();
-        mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
-        sleep(500);
-        mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
-        sleep(500);
-
-        if (number == 1) {
-            mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
-            wobbleMover.drop(this);
-
-        } else {
-            wobbleMover.drop(this);
-            mecanumDrivetrain.driveByGyro(15, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
-            sleep(500);
-        }
-
-        if (distanceBack > 0 ) {
-            mecanumDrivetrain.driveByGyro(distanceBack, MecanumDrivetrain.DIRECTION_FORWARD, 0.5, 0);
-            sleep(500);
-        }
-
-        mecanumDrivetrain.gyroTurn(-80, ROTATION_SPEED, this);
-        sleep(500);
+        //wobbleMover.grab();
         shooter.setPowerForHighGoal();
-
+        sleep(500);
+        mecanumDrivetrain.driveByGyro(19,MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
         sleep(1000);
 
         for (int i = 0; i<4; i++){
-            sleep(1500);
+            sleep(1000);
             shooter.pushRing();
-            sleep(1500);
+            sleep(1000);
             shooter.resetPusher();
         }
 
-        mecanumDrivetrain.stop();
-        mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 270);
-        mecanumDrivetrain.stop();
-    }
+        if (number == 0) {
+            mecanumDrivetrain.driveByGyro(12, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, STRAFE_SPEED,0);
+            sleep(500);
+            mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            sleep(500);
+            //wobbleMover.drop(this);
+            sleep(500);
+            mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
+            sleep(500);
+            mecanumDrivetrain.driveByGyro(38, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED,0);
+           /* sleep(250);
+            mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            wobbleMover.grab();
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(15, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            wobbleMover.release();
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(3, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);*/
+        } else if (number== 1){
+            /*
+            mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            wobbleMover.drop(this);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(distanceBack,MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(2, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
+            sleep(250);
+            wobbleMover.grab();
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(4, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(26, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            wobbleMover.release();
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(3, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED, 0);
+            sleep(250);*/
+        } else {
+           /* mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            wobbleMover.drop(this);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            wobbleMover.release();
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(distanceBack, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(2, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            wobbleMover.grab();
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(7, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(37, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            sleep(250);
+            wobbleMover.release();
+            sleep(250);
+            mecanumDrivetrain.driveByGyro(10, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED, 0);*/
+        }
+
+        mecanumDrivetrain.stop();    }
 }
