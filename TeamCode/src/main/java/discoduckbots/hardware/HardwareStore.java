@@ -2,6 +2,7 @@ package discoduckbots.hardware;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -23,7 +24,7 @@ public class HardwareStore {
         DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
         DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+//        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
 
         DcMotor intakeMotor = hardwareMap.get(DcMotor.class, "intake");
         intake = new Intake(intakeMotor);
@@ -40,8 +41,18 @@ public class HardwareStore {
         imu = new IMU(gyro);
         imu.initialize();
 
-        mecanumDrivetrain = new MecanumDrivetrain(telemetry, opMode, imu, colorSensor, frontLeft, frontRight, backLeft, backRight);
+        mecanumDrivetrain = createDrivetrain(telemetry, opMode, imu, colorSensor, frontLeft, frontRight, backLeft, backRight);
+    }
 
+    protected MecanumDrivetrain createDrivetrain(Telemetry telemetry,
+                                 LinearOpMode opMode,
+                                 IMU imu,
+                                 NormalizedColorSensor colorSensor,
+                                 DcMotor frontLeft,
+                                 DcMotor frontRight,
+                                 DcMotor backLeft,
+                                 DcMotor backRight){
+        return new MecanumDrivetrain(telemetry, opMode, imu, colorSensor, frontLeft, frontRight, backLeft, backRight);
     }
 
     public MecanumDrivetrain getMecanumDrivetrain() {

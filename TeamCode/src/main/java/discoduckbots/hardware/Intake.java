@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class Intake {
 
-    private static final double INTAKE_MOTOR_SPEED = 1.0;
+    private static final double INTAKE_MOTOR_SPEED = 0.9;
     private DcMotor intakeMotor;
 
     public Intake(DcMotor intakeMotor) {

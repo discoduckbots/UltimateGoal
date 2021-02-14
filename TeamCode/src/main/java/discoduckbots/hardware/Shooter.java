@@ -12,8 +12,12 @@ public class Shooter {
     private static final double MAX_ROTATIONS_PER_SECOND = 100;
     private static final double ENCODER_CYCLES_PER_ROTATION = 28;
 
-    private static final double HIGH_GOAL_POWER = 0.8;
-    private static final double POWER_SHOT_POWER = 0.7;
+    private static final double HIGH_GOAL_POWER = 0.85;
+    private static final double POWER_SHOT_POWER = 0.75;
+
+    public Servo getPusherServo(){
+        return pusherServo;
+    }
 
     public Shooter(DcMotorEx shooterMotor, Servo pusherServo) {
         this.shooterMotor = shooterMotor;
@@ -37,11 +41,11 @@ public class Shooter {
     }
 
     public void pushRing(){
-        pusherServo.setPosition(0.55);
+        pusherServo.setPosition(0.25);
     }
 
     public void resetPusher(){
-        pusherServo.setPosition(0.865);
+        pusherServo.setPosition(0.0);
     }
 
     public void stop(){
