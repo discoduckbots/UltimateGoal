@@ -29,12 +29,8 @@
 
 package discoduckbots.opmode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.vuforia.SmartTerrain;
 
 import discoduckbots.hardware.HardwareStore;
 import discoduckbots.hardware.Intake;
@@ -55,8 +51,9 @@ import discoduckbots.hardware.WobbleMover;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Mecanum OpMode", group="Linear Opmode")
-public class MecanumDrivetrainTeleOp extends LinearOpMode {
+
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Test mc OpMode", group="Linear Opmode")
+public class TestTeleOp extends LinearOpMode {
 
     private static final double THROTTLE = 0.45;
 
@@ -83,12 +80,12 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             telemetry.update();
 
             /* Gamepad 1 */
-            mecanumDrivetrain.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, THROTTLE);
+            mecanumDrivetrain.drive(-gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, THROTTLE);
 
             if (gamepad1.a) {
-                intake.intake();
+                mecanumDrivetrain.driveByGyro(20, MecanumDrivetrain.DIRECTION_REVERSE, 0.7, 0);
             } else if (gamepad1.b) {
-                intake.outtake();
+                mecanumDrivetrain.driveByGyro(20, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, 1, 0);
             } else {
                 intake.stop();
             }
@@ -102,9 +99,9 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             }
 
             if (gamepad2.y){
-                shooter.pushRing();
+                mecanumDrivetrain.driveByGyro(20,MecanumDrivetrain.DIRECTION_FORWARD ,.7, 0);
             }else if (gamepad2.x){
-                shooter.resetPusher();
+                mecanumDrivetrain.driveByGyro(20, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, 1, 0);
             }
 
             if (gamepad2.dpad_down || gamepad2.a){

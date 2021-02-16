@@ -96,19 +96,19 @@ public class MecanumDrivetrain implements DrivetrainInterface {
     }
 
     private void setMotorDirection(int direction){
-        if (DIRECTION_REVERSE == direction){
+        if (DIRECTION_FORWARD == direction){
             mBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             mBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
             mFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             mFrontRight.setDirection(DcMotorSimple.Direction.FORWARD);
         }
-        else if (DIRECTION_STRAFE_LEFT == direction){
+        else if (DIRECTION_STRAFE_RIGHT == direction){
             mBackLeft.setDirection(DcMotorSimple.Direction.FORWARD);
             mBackRight.setDirection(DcMotorSimple.Direction.FORWARD);
             mFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             mFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         }
-        else if (DIRECTION_STRAFE_RIGHT == direction){
+        else if (DIRECTION_STRAFE_LEFT == direction){
             mBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             mBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
             mFrontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
