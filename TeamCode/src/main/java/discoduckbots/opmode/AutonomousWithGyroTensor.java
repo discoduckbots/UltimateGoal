@@ -63,7 +63,7 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
         mecanumDrivetrain.driveByGyro(19,MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
         sleep(1000);
 
-        for (int i = 0; i<3; i++){
+        for (int i = 0; i<4; i++){
             sleep(1000);
             shooter.pushRing();
             sleep(1000);
