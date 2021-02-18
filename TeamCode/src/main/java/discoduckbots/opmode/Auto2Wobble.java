@@ -1,5 +1,6 @@
 package discoduckbots.opmode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -9,6 +10,7 @@ import discoduckbots.hardware.Shooter;
 import discoduckbots.hardware.WobbleMover;
 import discoduckbots.sensors.TensorFlow;
 //test
+@Disabled
 public class Auto2Wobble extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

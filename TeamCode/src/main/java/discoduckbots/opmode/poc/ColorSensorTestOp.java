@@ -2,6 +2,7 @@ package discoduckbots.opmode.poc;
 
 import android.graphics.Color;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 @TeleOp(name = "Color Sensor Test Op", group = "Sensor")
+@Disabled
 public class ColorSensorTestOp extends LinearOpMode {
 
     NormalizedColorSensor colorSensor;

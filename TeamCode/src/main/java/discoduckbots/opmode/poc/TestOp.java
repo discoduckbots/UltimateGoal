@@ -1,6 +1,7 @@
 package discoduckbots.opmode.poc;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,6 +14,7 @@ import discoduckbots.hardware.Intake;
 import discoduckbots.hardware.Shooter;
 
 @TeleOp(name = "Test Op", group = "Sensor")
+@Disabled
 public class TestOp extends LinearOpMode {
    private  DcMotor intakeMotor;
    private DcMotorEx shooterMotor;

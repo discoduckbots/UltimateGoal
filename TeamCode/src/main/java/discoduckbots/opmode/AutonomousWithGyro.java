@@ -1,5 +1,6 @@
 package discoduckbots.opmode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,6 +11,7 @@ import discoduckbots.hardware.Shooter;
 import discoduckbots.hardware.WobbleMover;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Gyro Autonomous", group="Linear Opmode")
+@Disabled
 public class AutonomousWithGyro extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

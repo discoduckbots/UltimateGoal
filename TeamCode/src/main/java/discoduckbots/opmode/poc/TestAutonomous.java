@@ -1,5 +1,6 @@
 package discoduckbots.opmode.poc;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -12,6 +13,7 @@ import discoduckbots.sensors.TensorFlow;
 import static discoduckbots.measurements.Measurements.DISTANCE_TO_LAUNCH_LINE;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="TestAutonomous", group="Linear Opmode")
+@Disabled
 public class TestAutonomous extends LinearOpMode {
 
 
