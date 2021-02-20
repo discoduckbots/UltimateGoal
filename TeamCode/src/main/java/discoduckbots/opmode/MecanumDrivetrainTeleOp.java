@@ -93,6 +93,13 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
                 intake.stop();
             }
 
+            if (gamepad1.y){
+                intake.pushRing();
+            }
+            else if (gamepad1.x){
+                intake.resetPusher();
+            }
+
             /* Gamepad 2 */
             if (gamepad2.right_trigger > 0){
                 shooter.setPowerForHighGoal();
@@ -107,10 +114,10 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
                 shooter.resetPusher();
             }
 
-            if (gamepad2.dpad_down || gamepad2.a){
+            if (gamepad2.dpad_down){
                 wobbleMover.lower(1);
             }
-            else if (gamepad2.dpad_up || gamepad2.b){
+            else if (gamepad2.dpad_up){
                 wobbleMover.lift(1);
             }
             else{

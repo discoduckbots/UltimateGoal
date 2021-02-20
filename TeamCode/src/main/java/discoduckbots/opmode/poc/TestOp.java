@@ -28,7 +28,7 @@ public class TestOp extends LinearOpMode {
         intakeMotor = hardwareMap.get(DcMotor.class, "intake");
       shooterMotor = hardwareMap.get(DcMotorEx.class, "shooter");
         pusherServo = hardwareMap.get(Servo.class, "pusher");
-        intake = new Intake(intakeMotor);
+        intake = new Intake(intakeMotor,null);
         shooter = new Shooter(shooterMotor, pusherServo);
 
 
