@@ -79,7 +79,7 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(33, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
+            mecanumDrivetrain.driveByGyro(35, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
            sleep(500);
             mecanumDrivetrain.driveByGyro(9, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
@@ -100,7 +100,7 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(49, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
+            mecanumDrivetrain.driveByGyro(51, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
             sleep(500);
             mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(750);
@@ -125,7 +125,7 @@ public class AutonomousWithGyroTensor extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(58, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
+            mecanumDrivetrain.driveByGyro(60, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
             sleep(500);
             mecanumDrivetrain.driveByGyro(9, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
