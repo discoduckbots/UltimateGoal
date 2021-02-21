@@ -355,42 +355,56 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         mBackLeft.setPower(basePower);
         mBackRight.setPower(basePower);
 
-        while (mFrontLeft.getTargetPosition() > mFrontLeft.getCurrentPosition() + tolerance){
+        int target;
+        int current;
+
+        while ((target = mFrontLeft.getTargetPosition()) > (current = mFrontLeft.getCurrentPosition()) + tolerance){
 
             double gyroAdjustment = imu.computeHeadingAdjustment(targetHeading);
+
+            double adjustedPower = basePower;
+            int distanceToTarget = target - current;
+            if (distanceToTarget < 20){
+                adjustedPower = basePower * .25;
+            }
+            else if (distanceToTarget < 10){
+                adjustedPower = basePower * .15;
+            }
+            if (adjustedPower < 0.2) {
+                adjustedPower = 0.2;
+            }
+            if (DIRECTION_FORWARD == direction) {
+                mFrontLeft.setPower(adjustedPower + gyroAdjustment);
+                mBackLeft.setPower(adjustedPower + gyroAdjustment);
+                mFrontRight.setPower(adjustedPower - gyroAdjustment);
+                mBackRight.setPower(adjustedPower - gyroAdjustment);
+            }
+            else if (DIRECTION_REVERSE == direction){
+                mFrontLeft.setPower(adjustedPower - gyroAdjustment);
+                mBackLeft.setPower(adjustedPower - gyroAdjustment);
+                mFrontRight.setPower(adjustedPower + gyroAdjustment);
+                mBackRight.setPower(adjustedPower + gyroAdjustment);
+            }
+            else if (DIRECTION_STRAFE_LEFT == direction){
+                mBackLeft.setPower(adjustedPower + gyroAdjustment);
+                mBackRight.setPower(adjustedPower + gyroAdjustment);
+                mFrontRight.setPower(adjustedPower - gyroAdjustment);
+                mFrontLeft.setPower(adjustedPower - gyroAdjustment);
+            }
+            else{ //Strafe Right
+                mBackLeft.setPower(adjustedPower - gyroAdjustment);
+                mBackRight.setPower(adjustedPower - gyroAdjustment);
+                mFrontRight.setPower(adjustedPower + gyroAdjustment);
+                mFrontLeft.setPower(adjustedPower + gyroAdjustment);
+            }
 
             mTelemetry.addData("In Loop Target Position:", mFrontLeft.getTargetPosition());
             mTelemetry.addData("Current Position: ", mFrontLeft.getCurrentPosition());
             mTelemetry.addData("Current Heading: ", imu.getIMUHeading());
             mTelemetry.addData("Target Heading: ", targetHeading);
             mTelemetry.addData("Gyro Adjustment: " , gyroAdjustment);
-            mTelemetry.addData("basePower: " , basePower);
+            mTelemetry.addData("adjPower: " , adjustedPower);
             mTelemetry.update();
-
-            if (DIRECTION_FORWARD == direction) {
-                mFrontLeft.setPower(basePower + gyroAdjustment);
-                mBackLeft.setPower(basePower + gyroAdjustment);
-                mFrontRight.setPower(basePower - gyroAdjustment);
-                mBackRight.setPower(basePower - gyroAdjustment);
-            }
-            else if (DIRECTION_REVERSE == direction){
-                mFrontLeft.setPower(basePower - gyroAdjustment);
-                mBackLeft.setPower(basePower - gyroAdjustment);
-                mFrontRight.setPower(basePower + gyroAdjustment);
-                mBackRight.setPower(basePower + gyroAdjustment);
-            }
-            else if (DIRECTION_STRAFE_LEFT == direction){
-                mBackLeft.setPower(basePower + gyroAdjustment);
-                mBackRight.setPower(basePower + gyroAdjustment);
-                mFrontRight.setPower(basePower - gyroAdjustment);
-                mFrontLeft.setPower(basePower - gyroAdjustment);
-            }
-            else{ //Strafe Right
-                mBackLeft.setPower(basePower - gyroAdjustment);
-                mBackRight.setPower(basePower - gyroAdjustment);
-                mFrontRight.setPower(basePower + gyroAdjustment);
-                mFrontLeft.setPower(basePower + gyroAdjustment);
-            }
         }
 
         stop();
