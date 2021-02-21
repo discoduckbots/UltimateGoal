@@ -58,7 +58,7 @@ import discoduckbots.hardware.WobbleMover;
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Mecanum OpMode", group="Linear Opmode")
 public class MecanumDrivetrainTeleOp extends LinearOpMode {
 
-    private static final double THROTTLE = 0.45;
+    private static double THROTTLE = 0.5;
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -129,6 +129,12 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             }
             if (gamepad2.right_bumper){
                 wobbleMover.release();
+            }
+            if (gamepad1.left_trigger > 0){
+                THROTTLE = .6;
+            }
+            if (gamepad2.right_trigger > 0){
+                THROTTLE = .5;
             }
         }
 
