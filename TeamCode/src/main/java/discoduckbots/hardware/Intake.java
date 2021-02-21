@@ -14,7 +14,6 @@ public class Intake {
     public Intake(DcMotor intakeMotor, Servo intakePusher) {
         this.intakeMotor = intakeMotor;
         this.intakePusher = intakePusher;
-        
     }
 
     public void intake() {
