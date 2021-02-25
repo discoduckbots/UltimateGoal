@@ -59,7 +59,7 @@ import discoduckbots.hardware.WobbleMover;
 public class MecanumDrivetrainTeleOp extends LinearOpMode {
 
     private static double THROTTLE = 0.5;
-
+    private static double intakeSpeed = .81;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private MecanumDrivetrain mecanumDrivetrain = null;
@@ -86,7 +86,7 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             mecanumDrivetrain.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, THROTTLE);
 
             if (gamepad1.a) {
-                intake.intake();
+                intake.intake(intakeSpeed );
             } else if (gamepad1.b) {
                 intake.outtake();
             } else {
@@ -125,6 +125,7 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             }
 
             if (gamepad2.left_bumper){
+
                 wobbleMover.grab();
             }
             if (gamepad2.right_bumper){
@@ -132,9 +133,11 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             }
             if (gamepad1.left_trigger > 0){
                 THROTTLE = .6;
+                intakeSpeed = .91;
             }
-            if (gamepad2.right_trigger > 0){
+            if (gamepad1.right_trigger > 0){
                 THROTTLE = .5;
+                intakeSpeed = .81;
             }
         }
 

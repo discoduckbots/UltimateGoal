@@ -16,6 +16,10 @@ public class Intake {
         this.intakePusher = intakePusher;
     }
 
+    public void intake(double speed) {
+        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor.setPower(speed);
+}
     public void intake() {
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeMotor.setPower(INTAKE_MOTOR_SPEED);
