@@ -48,7 +48,7 @@ public class TensorFlow {
             telemetry.addData("TDOD is not null", "");
             telemetry.update();
             tfod.activate();
-            tfod.setZoom(4, 1.78);
+            tfod.setZoom(4.2, 1.78);
         }else {
             telemetry.addData("TDOD is null", "");
             telemetry.update();

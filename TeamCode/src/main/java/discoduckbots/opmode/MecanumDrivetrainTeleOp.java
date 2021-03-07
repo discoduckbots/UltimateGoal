@@ -133,11 +133,9 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             }
             if (gamepad1.left_trigger > 0){
                 THROTTLE = .6;
-                intakeSpeed = .91;
             }
             if (gamepad1.right_trigger > 0){
                 THROTTLE = .5;
-                intakeSpeed = .81;
             }
         }
 

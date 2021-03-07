@@ -27,7 +27,7 @@ public class HardwareStore {
         DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
 //        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
 
-        DcMotor intakeMotor = hardwareMap.get(DcMotor.class, "intake");
+        DcMotorEx intakeMotor = hardwareMap.get(DcMotorEx.class, "intake");
         Servo intakePusher = hardwareMap.get(Servo.class, "intakePusher");
         intake = new Intake(intakeMotor, intakePusher);
 

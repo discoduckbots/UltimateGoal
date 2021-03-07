@@ -16,7 +16,7 @@ import discoduckbots.hardware.Shooter;
 @TeleOp(name = "Test Op", group = "Sensor")
 @Disabled
 public class TestOp extends LinearOpMode {
-   private  DcMotor intakeMotor;
+   private  DcMotorEx intakeMotor;
    private DcMotorEx shooterMotor;
    private Servo pusherServo;
    private Intake intake;
@@ -25,8 +25,8 @@ public class TestOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        intakeMotor = hardwareMap.get(DcMotor.class, "intake");
-      shooterMotor = hardwareMap.get(DcMotorEx.class, "shooter");
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intake");
+        shooterMotor = hardwareMap.get(DcMotorEx.class, "shooter");
         pusherServo = hardwareMap.get(Servo.class, "pusher");
         intake = new Intake(intakeMotor,null);
         shooter = new Shooter(shooterMotor, pusherServo);

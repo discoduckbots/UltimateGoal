@@ -17,11 +17,15 @@ public class WobbleMover {
     }
     public void drop(LinearOpMode opmode) {
         wobbleMoverMotor.setPower(-1.0);
-        opmode.sleep(1900);
+        opmode.sleep(1825);
         wobbleMoverMotor.setPower(0);
         release();
     }
-
+    public void liftInch(LinearOpMode opmode) {
+        wobbleMoverMotor.setPower(1.0);
+        opmode.sleep(300);
+        wobbleMoverMotor.setPower(0);
+    }
     public void dropLift(LinearOpMode opmode) {
         wobbleMoverMotor.setPower(-1.0);
         opmode.sleep(2000);
