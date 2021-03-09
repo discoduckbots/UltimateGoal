@@ -337,7 +337,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
     }
 
     private void driveByRevolutionWithGyro(int revolutions, double basePower, double targetHeading, int direction){
-        int tolerance = 10;
+        int tolerance = 2;
         int revolutionsRemaining = revolutions;
 
         mFrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -369,12 +369,13 @@ public class MecanumDrivetrain implements DrivetrainInterface {
 
             double adjustedPower = basePower;
             int distanceToTarget = target - current;
+            /*
             if (distanceToTarget < 20){
                 adjustedPower = basePower * .25;
             }
             else if (distanceToTarget < 10){
                 adjustedPower = basePower * .15;
-            }
+            }*/
             if (adjustedPower < 0.2) {
                 adjustedPower = 0.2;
             }
