@@ -12,7 +12,7 @@ public class Shooter {
     private static final double MAX_ROTATIONS_PER_SECOND = 100;
     private static final double ENCODER_CYCLES_PER_ROTATION = 28;
 
-    private static final double HIGH_GOAL_POWER = 0.85;
+    private static final double HIGH_GOAL_POWER = 1.0;
     private static final double POWER_SHOT_POWER = 0.75;
 
     public Servo getPusherServo(){

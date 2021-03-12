@@ -7,10 +7,11 @@ import discoduckbots.hardware.HardwareStore;
 import discoduckbots.hardware.MecanumDrivetrain;
 import discoduckbots.hardware.Shooter;
 import discoduckbots.hardware.WobbleMover;
+import discoduckbots.opmode.RingStackDetector;
 import discoduckbots.sensors.TensorFlow;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="TfGyro Autonomous2", group="Linear Opmode")
-public class AutonomousWithGyroTensor2 extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="LowVoltageAuto", group="Linear Opmode")
+public class AutonomousLowVoltage extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private MecanumDrivetrain mecanumDrivetrain = null;
@@ -47,7 +48,7 @@ public class AutonomousWithGyroTensor2 extends LinearOpMode {
         int distanceForward;
         int distanceBack;
         if (number == 0) {
-            distanceForward = 4;
+            distanceForward = 5;
             distanceBack = 19;
         } else if (number == 1) {
             distanceBack = 26;
@@ -59,7 +60,7 @@ public class AutonomousWithGyroTensor2 extends LinearOpMode {
         wobbleMover.grab();
         shooter.setPowerForHighGoal();
         //sleep(500);
-        mecanumDrivetrain.driveByGyro(21,MecanumDrivetrain.DIRECTION_REVERSE, .45, 0);
+        mecanumDrivetrain.driveByGyro(23,MecanumDrivetrain.DIRECTION_REVERSE, .45, 0);
         sleep(1000);
 
         for (int i = 0; i<3; i++){
@@ -78,9 +79,9 @@ public class AutonomousWithGyroTensor2 extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(11, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(32, MecanumDrivetrain.DIRECTION_FORWARD, .3,0);
+            mecanumDrivetrain.driveByGyro(29, MecanumDrivetrain.DIRECTION_FORWARD, .3,0);
             sleep(1000);
-            mecanumDrivetrain.driveByGyro(7, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
+            mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
             wobbleMover.grab();
             sleep(500);
@@ -88,14 +89,14 @@ public class AutonomousWithGyroTensor2 extends LinearOpMode {
             sleep(500);
             //mecanumDrivetrain.driveByGyro(3, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(16, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            mecanumDrivetrain.driveByGyro(17, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
             wobbleMover.release();
             sleep(500);
-            mecanumDrivetrain.driveByGyro(10, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED, 0);
+            mecanumDrivetrain.driveByGyro(3, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED, 0);
 
         } else if (number== 1){
-            mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
             mecanumDrivetrain.driveByGyro(1, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
@@ -103,7 +104,7 @@ public class AutonomousWithGyroTensor2 extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(6, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(40, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
+            mecanumDrivetrain.driveByGyro(41, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
             sleep(500);
             mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(750);
