@@ -89,7 +89,7 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
                 intake.intake(intakeSpeed );
             } else if (gamepad1.b) {
                 intake.outtake();
-            } else {
+            } else if (gamepad1.left_bumper) {
                 intake.stop();
             }
 
