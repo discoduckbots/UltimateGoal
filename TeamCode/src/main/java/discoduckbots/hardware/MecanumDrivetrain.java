@@ -237,7 +237,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         mTelemetry.update();
     }
 
-    public void driveByGyro(int inches, int direction, double baseSpeed, double targetHeading){
+    public void driveByGyro(double inches, int direction, double baseSpeed, double targetHeading){
         setMotorDirection(direction);
 
         int targetPosition = convertDistanceToTarget(inches, direction);
@@ -251,8 +251,8 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         driveUntilColor(baseSpeed, targetHeading, direction);
     }
 
-    private int convertDistanceToTarget(int inches, int direction){
-        float target;
+    private int convertDistanceToTarget(double inches, int direction){
+        double target;
 
         if (DIRECTION_FORWARD == direction || DIRECTION_REVERSE == direction){
             target = inches * ENCODER_CLICKS_FORWARD_1_INCH;
@@ -261,7 +261,8 @@ public class MecanumDrivetrain implements DrivetrainInterface {
             target = inches * ENCODER_CLICKS_STRAFE_1_INCH;
         }
 
-        return Math.round(target);
+        long val = Math.round(target);
+        return Integer.parseInt(Long.toString(val));
     }
 
     /**

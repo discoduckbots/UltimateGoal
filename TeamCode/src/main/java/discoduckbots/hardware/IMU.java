@@ -75,7 +75,6 @@ public class IMU {
     }
 
     public double computeHeadingAdjustment(double targetHeading){
-
         double currentHeading = getIMUHeading();
         double headingError = getHeadingError(targetHeading, currentHeading);
         boolean rotateLeft = headingError < 0;

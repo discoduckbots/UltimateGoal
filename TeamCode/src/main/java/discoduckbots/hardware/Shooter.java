@@ -12,8 +12,9 @@ public class Shooter {
     private static final double MAX_ROTATIONS_PER_SECOND = 100;
     private static final double ENCODER_CYCLES_PER_ROTATION = 28;
 
-    private static final double HIGH_GOAL_POWER = 1.0;
+    private static final double HIGH_GOAL_POWER = .9;
     private static final double POWER_SHOT_POWER = 0.75;
+    private static final double AUTO_GOAL_POWER = .85;
 
     public Servo getPusherServo(){
         return pusherServo;
@@ -34,6 +35,10 @@ public class Shooter {
 
     public void setPowerForHighGoal(){
         shooterMotor.setVelocity(getVelocity(HIGH_GOAL_POWER));
+    }
+
+    public void setPowerForAutonomous(){
+        shooterMotor.setVelocity(getVelocity(AUTO_GOAL_POWER));
     }
 
     public void setPowerForPowerShot(){
