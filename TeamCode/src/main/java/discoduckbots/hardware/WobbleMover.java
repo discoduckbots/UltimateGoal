@@ -23,7 +23,7 @@ public class WobbleMover {
     }
     public void liftInch(LinearOpMode opmode) {
         wobbleMoverMotor.setPower(1.0);
-        opmode.sleep(300);
+        opmode.sleep(325);
         wobbleMoverMotor.setPower(0);
     }
     public void dropLift(LinearOpMode opmode) {

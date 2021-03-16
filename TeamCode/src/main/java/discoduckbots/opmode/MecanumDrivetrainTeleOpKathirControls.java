@@ -29,12 +29,8 @@
 
 package discoduckbots.opmode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.vuforia.SmartTerrain;
 
 import discoduckbots.hardware.HardwareStore;
 import discoduckbots.hardware.Intake;
@@ -55,10 +51,10 @@ import discoduckbots.hardware.WobbleMover;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Mecanum OpMode", group="Linear Opmode")
-public class MecanumDrivetrainTeleOp extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Mecanum OpMode - Kathir", group="Linear Opmode")
+public class MecanumDrivetrainTeleOpKathirControls extends LinearOpMode {
 
-    private static double THROTTLE = 0.5;
+    private static double THROTTLE = 0.55;
     private static double intakeSpeed = .81;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -89,7 +85,7 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
                 intake.intake(intakeSpeed );
             } else if (gamepad1.b) {
                 intake.outtake();
-            } else  {
+            } else if (gamepad1.right_bumper) {
                 intake.stop();
             }
 
