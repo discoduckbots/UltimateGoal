@@ -10,7 +10,6 @@ public class WobbleMover {
 
     private DcMotor wobbleMoverMotor;
     private Servo wobbleGrabber;
-    private static final int DROP_LIFT_REVOLUTIONS = 100;
 
     public WobbleMover(DcMotor wobbleMoverMotor, Servo wobbleGrabber) {
         this.wobbleMoverMotor = wobbleMoverMotor;
@@ -23,10 +22,10 @@ public class WobbleMover {
         wobbleMoverMotor.setPower(0);
         release();
     }
-    public void dropByEncoder(){
+    public void dropByEncoder(int revolutions){
         wobbleMoverMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         wobbleMoverMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wobbleMoverMotor.setTargetPosition(wobbleMoverMotor.getCurrentPosition() + DROP_LIFT_REVOLUTIONS);
+        wobbleMoverMotor.setTargetPosition(wobbleMoverMotor.getCurrentPosition() + revolutions);
 
         while (wobbleMoverMotor.getTargetPosition() > wobbleMoverMotor.getCurrentPosition()){
             wobbleMoverMotor.setPower(1.0);
@@ -35,11 +34,11 @@ public class WobbleMover {
         release();
     }
 
-    public void grabByEncoder(){
+    public void grabAndLiftByEncoder(int revolutions){
         grab();
         wobbleMoverMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         wobbleMoverMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wobbleMoverMotor.setTargetPosition(wobbleMoverMotor.getCurrentPosition() + DROP_LIFT_REVOLUTIONS);
+        wobbleMoverMotor.setTargetPosition(wobbleMoverMotor.getCurrentPosition() + revolutions);
 
         while (wobbleMoverMotor.getTargetPosition() > wobbleMoverMotor.getCurrentPosition()){
             wobbleMoverMotor.setPower(1.0);

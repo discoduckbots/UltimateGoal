@@ -24,6 +24,7 @@ public class AutonomousLowVoltage extends LinearOpMode {
     private static final double AUTONOMOUS_SPEED = 0.65;
     private static final double STRAFE_SPEED = 0.5;
     private static final double ROTATION_SPEED = 0.4;
+    private static final int WOBBLE_GRABBER_REVOLUTIONS = 100;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -75,7 +76,7 @@ public class AutonomousLowVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.dropByEncoder();
+            wobbleMover.dropByEncoder(WOBBLE_GRABBER_REVOLUTIONS);
             sleep(500);
             mecanumDrivetrain.driveByGyro(11, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
@@ -83,11 +84,11 @@ public class AutonomousLowVoltage extends LinearOpMode {
             sleep(1000);
             mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.grabByEncoder();
+            wobbleMover.grabAndLiftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2);
             sleep(500);
             mecanumDrivetrain.driveByGyro(17, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.dropByEncoder();
+            wobbleMover.dropByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2);
             sleep(500);
             mecanumDrivetrain.driveByGyro(3, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED, 0);
 
@@ -96,7 +97,7 @@ public class AutonomousLowVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(1, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.dropByEncoder();
+            wobbleMover.dropByEncoder(WOBBLE_GRABBER_REVOLUTIONS);
             sleep(500);
             mecanumDrivetrain.driveByGyro(6, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
@@ -104,13 +105,13 @@ public class AutonomousLowVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(750);
-            wobbleMover.grabByEncoder();
+            wobbleMover.grabAndLiftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2);
             sleep(500);
             mecanumDrivetrain.driveByGyro(7, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
             sleep(500);
             mecanumDrivetrain.driveByGyro(31, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.dropByEncoder();
+            wobbleMover.dropByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2);
             sleep(500);
             mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
@@ -121,7 +122,7 @@ public class AutonomousLowVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.dropByEncoder();
+            wobbleMover.dropByEncoder(WOBBLE_GRABBER_REVOLUTIONS);
             sleep(500);
             mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
@@ -129,13 +130,13 @@ public class AutonomousLowVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(9, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.grabByEncoder();
+            wobbleMover.grabAndLiftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2);
             sleep(500);
             mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
             sleep(500);
             mecanumDrivetrain.driveByGyro(43, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.dropByEncoder();
+            wobbleMover.dropByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2);
             sleep(750);
             mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED, 0);
             sleep(500);
