@@ -23,7 +23,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
     private static final double AUTONOMOUS_SPEED = 0.65;
     private static final double STRAFE_SPEED = 0.5;
     private static final double ROTATION_SPEED = 0.4;
-    private static final int WOBBLE_GRABBER_REVOLUTIONS = 100;
+    private static final int WOBBLE_GRABBER_REVOLUTIONS = 6250;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -83,7 +83,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(1000);
             mecanumDrivetrain.driveByGyro(9.2, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.grabAndLiftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2);
+            wobbleMover.grabAndLiftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2, this);
             sleep(500);
             mecanumDrivetrain.driveByGyro(17, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
@@ -102,7 +102,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(750);
-            wobbleMover.grabAndLiftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2);
+            wobbleMover.grabAndLiftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2, this);
             sleep(500);
             mecanumDrivetrain.driveByGyro(7, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
             sleep(500);
@@ -127,7 +127,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(7.25, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.grabAndLiftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2);
+            wobbleMover.grabAndLiftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2, this);
             sleep(500);
             mecanumDrivetrain.driveByGyro(3.75, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
             sleep(500);

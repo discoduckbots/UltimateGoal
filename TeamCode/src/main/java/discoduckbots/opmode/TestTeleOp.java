@@ -77,49 +77,13 @@ public class TestTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            telemetry.addData("Pusher Servo Position: ", shooter.getPusherServo().getPosition());
-            telemetry.update();
 
-            /* Gamepad 1 */
-            mecanumDrivetrain.drive(-gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, THROTTLE);
-
-            if (gamepad1.a) {
-                mecanumDrivetrain.driveByGyro(20, MecanumDrivetrain.DIRECTION_REVERSE, 0.7, 0);
-            } else if (gamepad1.b) {
-                mecanumDrivetrain.driveByGyro(20, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, 1, 0);
-            } else {
-                intake.stop();
+            if (gamepad1.a){
+                wobbleMover.dropByEncoder(6250);
             }
 
-            /* Gamepad 2 */
-            if (gamepad2.right_trigger > 0){
-                shooter.setPowerForHighGoal();
-            }
-            else if (gamepad2.left_trigger > 0){
-                shooter.setPowerForPowerShot();
-            }
-
-            if (gamepad2.y){
-                mecanumDrivetrain.driveByGyro(20,MecanumDrivetrain.DIRECTION_FORWARD ,.7, 0);
-            }else if (gamepad2.x){
-                mecanumDrivetrain.driveByGyro(20, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, 1, 0);
-            }
-
-            if (gamepad2.dpad_down || gamepad2.a){
-                wobbleMover.lower(1);
-            }
-            else if (gamepad2.dpad_up || gamepad2.b){
-                wobbleMover.lift(1);
-            }
-            else{
-                wobbleMover.stop();
-            }
-
-            if (gamepad2.left_bumper){
-                wobbleMover.grab();
-            }
-            if (gamepad2.right_bumper){
-                wobbleMover.release();
+            if (gamepad1.b){
+                wobbleMover.grabAndLiftByEncoder(6250, this);
             }
         }
 

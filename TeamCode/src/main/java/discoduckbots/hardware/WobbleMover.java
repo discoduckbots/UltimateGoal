@@ -23,7 +23,7 @@ public class WobbleMover {
         release();
     }
     public void dropByEncoder(int revolutions){
-        wobbleMoverMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        wobbleMoverMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         wobbleMoverMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wobbleMoverMotor.setTargetPosition(wobbleMoverMotor.getCurrentPosition() + revolutions);
 
@@ -34,15 +34,17 @@ public class WobbleMover {
         release();
     }
 
-    public void grabAndLiftByEncoder(int revolutions){
+    public void grabAndLiftByEncoder(int revolutions, LinearOpMode opMode){
         grab();
-        wobbleMoverMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        opMode.sleep(500);
+        wobbleMoverMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         wobbleMoverMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         wobbleMoverMotor.setTargetPosition(wobbleMoverMotor.getCurrentPosition() + revolutions);
 
         while (wobbleMoverMotor.getTargetPosition() > wobbleMoverMotor.getCurrentPosition()){
             wobbleMoverMotor.setPower(1.0);
         }
+
         wobbleMoverMotor.setPower(0.0);
 
     }
