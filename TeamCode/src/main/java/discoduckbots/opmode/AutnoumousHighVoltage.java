@@ -80,7 +80,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(28, MecanumDrivetrain.DIRECTION_FORWARD, .3,0);
             sleep(1000);
-            mecanumDrivetrain.driveByGyro(9.5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
+            mecanumDrivetrain.driveByGyro(9.2, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
             wobbleMover.grab();
             sleep(500);
@@ -117,7 +117,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED, 0);
+            mecanumDrivetrain.driveByGyro(6, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED, 0);
 
         } else {
             mecanumDrivetrain.driveByGyro(10, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
@@ -130,14 +130,15 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(53, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
+            mecanumDrivetrain.driveByGyro(7.25, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
             wobbleMover.grab();
             sleep(500);
             wobbleMover.liftInch(this);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(2.5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
+            mecanumDrivetrain.driveByGyro(3.75, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
             sleep(500);
+            
             mecanumDrivetrain.driveByGyro(43, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
             wobbleMover.release();
