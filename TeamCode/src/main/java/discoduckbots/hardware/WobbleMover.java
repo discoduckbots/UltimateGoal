@@ -3,12 +3,14 @@ package discoduckbots.hardware;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class WobbleMover {
 
     private DcMotor wobbleMoverMotor;
     private Servo wobbleGrabber;
+    private static final int DROP_LIFT_REVOLUTIONS = 100;
 
     public WobbleMover(DcMotor wobbleMoverMotor, Servo wobbleGrabber) {
         this.wobbleMoverMotor = wobbleMoverMotor;
@@ -21,6 +23,31 @@ public class WobbleMover {
         wobbleMoverMotor.setPower(0);
         release();
     }
+    public void dropByEncoder(){
+        wobbleMoverMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        wobbleMoverMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wobbleMoverMotor.setTargetPosition(wobbleMoverMotor.getCurrentPosition() + DROP_LIFT_REVOLUTIONS);
+
+        while (wobbleMoverMotor.getTargetPosition() > wobbleMoverMotor.getCurrentPosition()){
+            wobbleMoverMotor.setPower(1.0);
+        }
+        wobbleMoverMotor.setPower(0.0);
+        release();
+    }
+
+    public void grabByEncoder(){
+        grab();
+        wobbleMoverMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        wobbleMoverMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wobbleMoverMotor.setTargetPosition(wobbleMoverMotor.getCurrentPosition() + DROP_LIFT_REVOLUTIONS);
+
+        while (wobbleMoverMotor.getTargetPosition() > wobbleMoverMotor.getCurrentPosition()){
+            wobbleMoverMotor.setPower(1.0);
+        }
+        wobbleMoverMotor.setPower(0.0);
+
+    }
+
     public void liftInch(LinearOpMode opmode) {
         wobbleMoverMotor.setPower(1.0);
         opmode.sleep(325);

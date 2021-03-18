@@ -74,7 +74,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.drop(this);
+            wobbleMover.dropByEncoder();
             sleep(500);
             mecanumDrivetrain.driveByGyro(11, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
@@ -82,22 +82,18 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(1000);
             mecanumDrivetrain.driveByGyro(9.2, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.grab();
-            sleep(500);
-            wobbleMover.liftInch(this);
-            sleep(500);
-            //mecanumDrivetrain.driveByGyro(3, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
+            wobbleMover.grabByEncoder();
             sleep(500);
             mecanumDrivetrain.driveByGyro(17, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.release();
+            wobbleMover.dropByEncoder();
             sleep(500);
             mecanumDrivetrain.driveByGyro(8, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED, 0);
 
         } else if (number== 1){
             mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.drop(this);
+            wobbleMover.dropByEncoder();
             sleep(500);
             mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
@@ -105,15 +101,13 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(14, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(750);
-            wobbleMover.grab();
-            sleep(500);
-            wobbleMover.liftInch(this);
+            wobbleMover.grabByEncoder();
             sleep(500);
             mecanumDrivetrain.driveByGyro(7, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
             sleep(500);
             mecanumDrivetrain.driveByGyro(31, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.release();
+            wobbleMover.dropByEncoder();
             sleep(500);
             mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
@@ -124,7 +118,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(distanceForward, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.drop(this);
+            wobbleMover.dropByEncoder();
             sleep(500);
             mecanumDrivetrain.driveByGyro(10, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
@@ -132,16 +126,13 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(7.25, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.grab();
-            sleep(500);
-            wobbleMover.liftInch(this);
+            wobbleMover.grabByEncoder();
             sleep(500);
             mecanumDrivetrain.driveByGyro(3.75, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
             sleep(500);
-            
             mecanumDrivetrain.driveByGyro(43, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
-            wobbleMover.release();
+            wobbleMover.dropByEncoder();
             sleep(750);
             mecanumDrivetrain.driveByGyro(10, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED, 0);
             sleep(500);
@@ -149,5 +140,4 @@ public class AutnoumousHighVoltage extends LinearOpMode {
         }
 
         mecanumDrivetrain.stop();    }
-
 }
