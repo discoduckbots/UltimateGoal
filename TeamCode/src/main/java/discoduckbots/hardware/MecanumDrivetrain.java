@@ -569,7 +569,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
 
         ElapsedTime startTime = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
         while ((mFrontLeft.getTargetPosition() > mFrontLeft.getCurrentPosition() + tolerance)
-        && startTime.time() < 10){
+        && startTime.time() < 10 && opMode.opModeIsActive()){
             mTelemetry.addData("In Loop Target Position:", mFrontLeft.getTargetPosition());
             mTelemetry.addData("Current Position: ", mFrontLeft.getCurrentPosition());
             mTelemetry.update();
