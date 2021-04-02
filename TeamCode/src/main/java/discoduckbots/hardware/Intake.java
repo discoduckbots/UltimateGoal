@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Intake {
 
-    private static final double INTAKE_MOTOR_SPEED = .5;
+    private static final double INTAKE_MOTOR_SPEED = .81;
     private DcMotorEx intakeMotor;
     private Servo intakePusher;
     private static final double MAX_ROTATIONS_PER_SECOND = 100;

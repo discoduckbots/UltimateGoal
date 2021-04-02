@@ -364,7 +364,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         int firstPosition3 = mBackRight.getCurrentPosition();
         int firstPosition4 = mFrontRight.getCurrentPosition();
 
-        while ((target = mBackLeft.getTargetPosition()) > (current = mBackLeft.getCurrentPosition()) + tolerance){
+        while (opMode.opModeIsActive() && (target = mBackLeft.getTargetPosition()) > (current = mBackLeft.getCurrentPosition()) + tolerance){
 
             double gyroAdjustment = imu.computeHeadingAdjustment(targetHeading);
 

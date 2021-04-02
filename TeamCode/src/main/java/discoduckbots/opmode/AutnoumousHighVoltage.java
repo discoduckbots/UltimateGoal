@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import discoduckbots.hardware.HardwareStore;
+import discoduckbots.hardware.Intake;
 import discoduckbots.hardware.MecanumDrivetrain;
 import discoduckbots.hardware.Shooter;
 import discoduckbots.hardware.WobbleMover;
@@ -16,6 +17,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
     private MecanumDrivetrain mecanumDrivetrain = null;
     private WobbleMover wobbleMover = null;
     private Shooter shooter = null;
+    private Intake intake = null;
 
     TensorFlow tensorFlow = null;
     RingStackDetector ringStackDetector = null;
@@ -32,6 +34,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
         mecanumDrivetrain = hardwareStore.getMecanumDrivetrain();
         wobbleMover = hardwareStore.getWobbleMover();
         shooter = hardwareStore.getShooter();
+        intake = hardwareStore.getIntake();
 
         tensorFlow = new TensorFlow();
         ringStackDetector = new RingStackDetector();
@@ -95,20 +98,40 @@ public class AutnoumousHighVoltage extends LinearOpMode {
 
         } else if (number== 1){
             mecanumDrivetrain.driveByGyro(13, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
-            sleep(500);
+            sleep(750);
             wobbleMover.dropByEncoder(WOBBLE_GRABBER_REVOLUTIONS);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
+            wobbleMover.liftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/3);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(40, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
+            wobbleMover.grab();
             sleep(500);
-            mecanumDrivetrain.driveByGyro(14.5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
+            mecanumDrivetrain.driveByGyro(20, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
+            sleep(500);
+            mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED,0);
+            sleep(500);
+            wobbleMover.dropByEncoder(WOBBLE_GRABBER_REVOLUTIONS/4);
+            intake.outtake();
+            sleep(500);
+            mecanumDrivetrain.driveByGyro(19, MecanumDrivetrain.DIRECTION_FORWARD, AUTONOMOUS_SPEED/2,0);
+            sleep(500);
+            mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(750);
             wobbleMover.grabAndLiftByEncoder(WOBBLE_GRABBER_REVOLUTIONS/4, this);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(7, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
+            mecanumDrivetrain.driveByGyro(5, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, AUTONOMOUS_SPEED,0);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(31, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            mecanumDrivetrain.driveByGyro(15, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
+            sleep(500);
+            intake.resetPusher();
+            sleep(500);
+            intake.pushRing();
+            sleep(500);
+            intake.resetPusher();
+            sleep(750);
+            shooter.pushRing();
+            sleep(500);
+            shooter.resetPusher();
+            mecanumDrivetrain.driveByGyro(16, MecanumDrivetrain.DIRECTION_REVERSE, AUTONOMOUS_SPEED, 0);
             sleep(500);
             wobbleMover.release();
             //wobbleMover.dropByEncoder(WOBBLE_GRABBER_REVOLUTIONS/2);
