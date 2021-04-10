@@ -79,7 +79,7 @@ public class TestTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
 
             if (gamepad1.a){
-                wobbleMover.dropByEncoder(6250);
+                mecanumDrivetrain.driveByGyro(7, MecanumDrivetrain.DIRECTION_FORWARD, 30, 0.5);
             }
 
             if (gamepad1.b){

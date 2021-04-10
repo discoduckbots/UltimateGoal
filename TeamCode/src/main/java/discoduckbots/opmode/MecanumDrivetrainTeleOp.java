@@ -55,7 +55,7 @@ import discoduckbots.hardware.WobbleMover;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Mecanum OpMode", group="Linear Opmode")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Nikolay Opmode", group="Linear Opmode")
 public class MecanumDrivetrainTeleOp extends LinearOpMode {
 
     private static double THROTTLE = 0.5;

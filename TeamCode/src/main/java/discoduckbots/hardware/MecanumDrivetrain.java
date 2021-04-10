@@ -337,7 +337,7 @@ public class MecanumDrivetrain implements DrivetrainInterface {
         return false;
     }
 
-    private void driveByRevolutionWithGyro(int revolutions, double basePower, double targetHeading, int direction){
+    private void    driveByRevolutionWithGyro(int revolutions, double basePower, double targetHeading, int direction){
         int tolerance = 2;
         int revolutionsRemaining = revolutions;
 
