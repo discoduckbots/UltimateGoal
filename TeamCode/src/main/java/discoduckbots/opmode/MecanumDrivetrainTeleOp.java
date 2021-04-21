@@ -39,6 +39,7 @@ import com.vuforia.SmartTerrain;
 import discoduckbots.hardware.HardwareStore;
 import discoduckbots.hardware.Intake;
 import discoduckbots.hardware.MecanumDrivetrain;
+import discoduckbots.hardware.RingBlocker;
 import discoduckbots.hardware.Shooter;
 import discoduckbots.hardware.WobbleMover;
 
@@ -66,6 +67,7 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
     private Intake intake = null;
     private Shooter shooter = null;
     private WobbleMover wobbleMover = null;
+    private RingBlocker ringBlocker = null;
 
     @Override
     public void runOpMode() {
@@ -74,6 +76,7 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
         intake = hardwareStore.getIntake();
         shooter = hardwareStore.getShooter();
         wobbleMover = hardwareStore.getWobbleMover();
+        ringBlocker = hardwareStore.getRingBlocker();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -136,6 +139,12 @@ public class MecanumDrivetrainTeleOp extends LinearOpMode {
             }
             if (gamepad1.right_trigger > 0){
                 THROTTLE = .5;
+            }
+            if (gamepad2.a){
+                ringBlocker.down();
+            }
+            if (gamepad2.b){
+                ringBlocker.up();
             }
         }
 

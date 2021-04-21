@@ -17,8 +17,10 @@ public class HardwareStore {
     private Intake intake;
     private Shooter shooter;
     private WobbleMover wobbleMover;
+    private RingBlocker ringBlocker = null;
     private IMU imu;
     private NormalizedColorSensor colorSensor = null;
+
 
     public HardwareStore(HardwareMap hardwareMap, Telemetry telemetry, LinearOpMode opMode) {
         DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
@@ -38,6 +40,9 @@ public class HardwareStore {
         DcMotor wobbleMoverMotor = hardwareMap.get(DcMotor.class, "wobbleMover");
         Servo wobbleGrabber = hardwareMap.get(Servo.class, "wobbleGrabber");
         wobbleMover = new WobbleMover(wobbleMoverMotor, wobbleGrabber);
+
+        Servo ringBlockerServo = hardwareMap.get(Servo.class, "ringBlocker");
+        ringBlocker = new RingBlocker(ringBlockerServo);
 
         BNO055IMU gyro = hardwareMap.get(BNO055IMU.class, "imu");
         imu = new IMU(gyro);
@@ -71,6 +76,9 @@ public class HardwareStore {
 
     public WobbleMover getWobbleMover() {
         return wobbleMover;
+    }
+    public RingBlocker getRingBlocker() {
+        return ringBlocker;
     }
 
     public IMU getImu(){

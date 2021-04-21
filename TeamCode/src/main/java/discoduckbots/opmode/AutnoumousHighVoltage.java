@@ -25,7 +25,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
     private static final double AUTONOMOUS_SPEED = 0.65;
     private static final double STRAFE_SPEED = 0.5;
     private static final double ROTATION_SPEED = 0.4;
-    private static final int WOBBLE_GRABBER_REVOLUTIONS = 6150;
+    private static final int WOBBLE_GRABBER_REVOLUTIONS = 4832;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -83,7 +83,7 @@ public class AutnoumousHighVoltage extends LinearOpMode {
             sleep(500);
             mecanumDrivetrain.driveByGyro(11, MecanumDrivetrain.DIRECTION_STRAFE_RIGHT, STRAFE_SPEED,0);
             sleep(500);
-            mecanumDrivetrain.driveByGyro(28.75, MecanumDrivetrain.DIRECTION_FORWARD, .3,0);
+            mecanumDrivetrain.driveByGyro(29, MecanumDrivetrain.DIRECTION_FORWARD, .3,0);
             sleep(1000);
             mecanumDrivetrain.driveByGyro(9.2, MecanumDrivetrain.DIRECTION_STRAFE_LEFT, AUTONOMOUS_SPEED, 0);
             sleep(500);
