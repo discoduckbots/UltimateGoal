@@ -20,6 +20,6 @@ public class RingBlocker {
     }
 
     public void down() {
-        ringBlocker.setPosition(0.5);
+        ringBlocker.setPosition(0.58);
     }
 }
