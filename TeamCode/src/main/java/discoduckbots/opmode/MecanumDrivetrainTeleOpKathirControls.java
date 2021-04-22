@@ -63,7 +63,6 @@ public class MecanumDrivetrainTeleOpKathirControls extends LinearOpMode {
     private Intake intake = null;
     private Shooter shooter = null;
     private WobbleMover wobbleMover = null;
-    private RingBlocker ringBlocker = null;
 
     @Override
     public void runOpMode() {
@@ -72,7 +71,6 @@ public class MecanumDrivetrainTeleOpKathirControls extends LinearOpMode {
         intake = hardwareStore.getIntake();
         shooter = hardwareStore.getShooter();
         wobbleMover = hardwareStore.getWobbleMover();
-        ringBlocker = hardwareStore.getRingBlocker();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -85,62 +83,52 @@ public class MecanumDrivetrainTeleOpKathirControls extends LinearOpMode {
             mecanumDrivetrain.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, THROTTLE);
 
             if (gamepad1.a) {
-                intake.intake(intakeSpeed );
+                intake.intake(intakeSpeed);
             } else if (gamepad1.b) {
                 intake.outtake();
             } else if (gamepad1.right_bumper) {
                 intake.stop();
             }
 
-            if (gamepad1.y){
+            if (gamepad1.y) {
                 intake.pushRing();
-            }
-            else if (gamepad1.x){
+            } else if (gamepad1.x) {
                 intake.resetPusher();
             }
 
             /* Gamepad 2 */
-            if (gamepad2.right_trigger > 0){
+            if (gamepad2.right_trigger > 0) {
                 shooter.setPowerForHighGoal();
-            }
-            else if (gamepad2.left_trigger > 0){
+            } else if (gamepad2.left_trigger > 0) {
                 shooter.setPowerForPowerShot();
             }
 
-            if (gamepad2.y){
+            if (gamepad2.y) {
                 shooter.pushRing();
-            }else if (gamepad2.x){
+            } else if (gamepad2.x) {
                 shooter.resetPusher();
             }
 
-            if (gamepad2.dpad_down){
+            if (gamepad2.dpad_down) {
                 wobbleMover.lower(1);
-            }
-            else if (gamepad2.dpad_up){
+            } else if (gamepad2.dpad_up) {
                 wobbleMover.lift(1);
-            }
-            else{
+            } else {
                 wobbleMover.stop();
             }
 
-            if (gamepad2.left_bumper){
+            if (gamepad2.left_bumper) {
 
                 wobbleMover.grab();
             }
-            if (gamepad2.right_bumper){
+            if (gamepad2.right_bumper) {
                 wobbleMover.release();
             }
-            if (gamepad1.left_trigger > 0){
+            if (gamepad1.left_trigger > 0) {
                 THROTTLE = .6;
             }
-            if (gamepad1.right_trigger > 0){
+            if (gamepad1.right_trigger > 0) {
                 THROTTLE = .5;
-            }
-            if (gamepad2.a){
-                ringBlocker.down();
-            }
-            if (gamepad2.b){
-                ringBlocker.up();
             }
         }
 
